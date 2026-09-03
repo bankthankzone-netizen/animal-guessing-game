@@ -12,79 +12,168 @@
             text-align: center;
             padding: 20px;
             margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .container {
-            max-width: 600px;
-            margin: 40px auto;
+            max-width: 650px;
+            width: 100%;
             background: white;
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
         }
         h1 {
             color: #ff6b6b;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+        }
+        .subtitle {
+            color: #57606f;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
         }
         .score-board {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #0984e3;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-weight: bold;
+            background: #e8f4fd;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .question-wrapper {
+            background: #f1f2f6;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            transition: opacity 0.3s ease;
         }
         .question-box {
             font-size: 1.2rem;
-            background: #f1f2f6;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
             line-height: 1.5;
             color: #2f3640;
+            margin-bottom: 12px;
+        }
+        .action-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .icon-btn {
+            background: #dfe4ea;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #2f3640;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .icon-btn:hover {
+            background: #ced6e0;
+            transform: scale(1.05);
+        }
+        .translation-box {
+            font-size: 0.95rem;
+            color: #e67e22;
+            background: #fef9e7;
+            padding: 8px;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+            font-style: italic;
         }
         .choices-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 15px;
         }
         .choice-btn {
-            padding: 15px;
-            font-size: 1.1rem;
+            padding: 14px;
+            font-size: 1.05rem;
             background-color: #74b9ff;
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 15px;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 0 #0984e3;
         }
         .choice-btn:hover {
             background-color: #0984e3;
-            transform: scale(1.03);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #074b83;
+        }
+        .choice-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #074b83;
+        }
+        .choice-btn.correct {
+            background-color: #2ed573 !important;
+            box-shadow: 0 4px 0 #20bf55 !important;
+        }
+        .choice-btn.wrong {
+            background-color: #ff4757 !important;
+            box-shadow: 0 4px 0 #cc2131 !important;
+        }
+        .vocab-box {
+            background: #e3fafc;
+            border-left: 5px solid #00b4d8;
+            padding: 10px 15px;
+            border-radius: 0 10px 10px 0;
+            text-align: left;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            display: none;
+        }
+        .vocab-box strong {
+            color: #0077b6;
         }
         #feedback {
-            margin-top: 15px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            min-height: 30px;
+            min-height: 25px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" id="game-card">
         <h1>🦁 Animal Guessing Game 🐶</h1>
-        <p>Read the clue and choose the correct animal!</p>
+        <div class="subtitle">Fun English Game for Grade 3-4 Kids</div>
         
         <div class="score-board">
             Question: <span id="current-q">1</span>/30 | Score: <span id="score">0</span>
         </div>
 
-        <div class="question-box" id="clue-text">
-            Loading clue...
+        <div class="question-wrapper">
+            <div class="question-box" id="clue-text">Loading clue...</div>
+            
+            <div class="action-bar">
+                <button class="icon-btn" onclick="speakClue()">🔊 Listen Clue</button>
+                <button class="icon-btn" onclick="toggleTranslation()">🌐 Translate Thai</button>
+            </div>
+
+            <div class="translation-box" id="translation-text">คำแปลภาษาไทยจะแสดงที่นี่</div>
         </div>
 
-        <div class="choices-container" id="choices-box">
-            <!-- ปุ่มช้อยส์จะถูกสร้างด้วย JavaScript -->
+        <div class="choices-container" id="choices-box"></div>
+
+        <div class="vocab-box" id="vocab-box">
+            📚 <strong>Vocabulary:</strong> <span id="vocab-content"></span>
         </div>
 
         <div id="feedback"></div>
@@ -92,36 +181,36 @@
 
     <script>
         const questions = [
-            { clue: "I am big and gray. I have a long trunk and big ears. What am I?", choices: ["Elephant", "Lion", "Giraffe", "Zebra"], answer: "Elephant" },
-            { clue: "I am the king of the jungle. I have a big mane and I roar. What am I?", choices: ["Tiger", "Lion", "Bear", "Monkey"], answer: "Lion" },
-            { clue: "I am tall with a very long neck. I love to eat leaves from tall trees. What am I?", choices: ["Horse", "Elephant", "Giraffe", "Cow"], answer: "Giraffe" },
-            { clue: "I am black and white. I look like a horse with stripes. What am I?", choices: ["Zebra", "Cow", "Panda", "Tiger"], answer: "Zebra" },
-            { clue: "I am green and I love to hop and jump near ponds. I say 'ribbit'. What am I?", choices: ["Fish", "Frog", "Turtle", "Duck"], answer: "Frog" },
-            { clue: "I am man's best friend. I love to bark and play fetch. What am I?", choices: ["Cat", "Dog", "Rabbit", "Fox"], answer: "Dog" },
-            { clue: "I am small, I love to catch mice, and I say 'meow'. What am I?", choices: ["Dog", "Cat", "Mouse", "Hamster"], answer: "Cat" },
-            { clue: "I love to eat carrots and I have long ears. I hop around. What am I?", choices: ["Rabbit", "Monkey", "Pig", "Sheep"], answer: "Rabbit" },
-            { clue: "I give you milk. I am black and white and I say 'moo'. What am I?", choices: ["Goat", "Horse", "Cow", "Sheep"], answer: "Cow" },
-            { clue: "I live in the water, I have fins and gills, and I swim all day. What am I?", choices: ["Fish", "Shark", "Whale", "Frog"], answer: "Fish" },
-            { clue: "I have feathers, wings, and a beak. I can fly high in the sky. What am I?", choices: ["Bird", "Bat", "Bee", "Frog"], answer: "Bird" },
-            { clue: "I am very slow and I carry a heavy shell on my back. What am I?", choices: ["Snail", "Turtle", "Crab", "Frog"], answer: "Turtle" },
-            { clue: "I am pink and fat. I love to roll in the mud. What am I?", choices: ["Pig", "Sheep", "Hippo", "Cow"], answer: "Pig" },
-            { clue: "I am very smart. I live in the ocean and I love to jump and play. What am I?", choices: ["Shark", "Dolphin", "Fish", "Octopus"], answer: "Dolphin" },
-            { clue: "I have eight arms and I live deep in the sea. What am I?", choices: ["Crab", "Octopus", "Starfish", "Jellyfish"], answer: "Octopus" },
-            { clue: "I am black and white, I live in the snow, and I cannot fly. What am I?", choices: ["Polar Bear", "Penguin", "Seal", "Zebra"], answer: "Penguin" },
-            { clue: "I have black and orange stripes. I am a big wild cat. What am I?", choices: ["Lion", "Tiger", "Leopard", "Cheetah"], answer: "Tiger" },
-            { clue: "I am brown, I love honey, and I sleep all winter. What am I?", choices: ["Wolf", "Bear", "Fox", "Lion"], answer: "Bear" },
-            { clue: "I am a pink bird with long legs that loves to stand in water. What am I?", choices: ["Flamingo", "Duck", "Swan", "Ostrich"], answer: "Flamingo" },
-            { clue: "I am a small insect that makes honey and buzzes around flowers. What am I?", choices: ["Ant", "Bee", "Wasp", "Fly"], answer: "Bee" },
-            { clue: "I am green and I have a hard shell. I snap with my big mouth and live in rivers. What am I?", choices: ["Alligator", "Crocodile", "Turtle", "Frog"], answer: "Crocodile" },
-            { clue: "I am a jumping animal from Australia and carry my baby in a pouch. What am I?", choices: ["Kangaroo", "Koala", "Rabbit", "Deer"], answer: "Kangaroo" },
-            { clue: "I am small and gray. I love to eat cheese and run away from cats. What am I?", choices: ["Mouse", "Hamster", "Rabbit", "Squirrel"], answer: "Mouse" },
-            { clue: "I have a long tail and love to climb trees and eat bananas. What am I?", choices: ["Monkey", "Cat", "Squirrel", "Sloth"], answer: "Monkey" },
-            { clue: "I am a bird that cannot fly, but I can run super fast across the desert. What am I?", choices: ["Penguin", "Ostrich", "Duck", "Chicken"], answer: "Ostrich" },
-            { clue: "I have black and yellow stripes and I sting when I'm mad (not a bee). What am I?", choices: ["Wasp", "Fly", "Ant", "Mosquito"], answer: "Wasp" },
-            { clue: "I live in the ocean and have sharp teeth. People call me a scary swimmer. What am I?", choices: ["Whale", "Shark", "Dolphin", "Seal"], answer: "Shark" },
-            { clue: "I have long ears and a soft coat. I am smaller than a horse and carry heavy things. What am I?", choices: ["Donkey", "Horse", "Goat", "Sheep"], answer: "Donkey" },
-            { clue: "I am green, scaly, and I can change my skin color to hide. What am I?", choices: ["Snake", "Chameleon", "Frog", "Lizard"], answer: "Chameleon" },
-            { clue: "I am a big farm animal with hooves. People love to ride me. What am I?", choices: ["Cow", "Horse", "Donkey", "Pig"], answer: "Horse" }
+            { clue: "I am big and gray. I have a long trunk and big ears. What am I?", choices: ["Elephant", "Lion", "Giraffe", "Zebra"], answer: "Elephant", thai: "ฉันตัวใหญ่และสีเทา ฉันมีงวงยาวและหูใหญ่ ฉันคือตัวอะไร?", vocab: "trunk (งวงช้าง), gray (สีเทา)" },
+            { clue: "I am the king of the jungle. I have a big mane and I roar. What am I?", choices: ["Tiger", "Lion", "Bear", "Monkey"], answer: "Lion", thai: "ฉันคือราชาแห่งป่า ฉันมีแผงคอใหญ่และคำราม ฉันคือตัวอะไร?", vocab: "mane (แผงคอ), roar (คำราม)" },
+            { clue: "I am tall with a very long neck. I love to eat leaves from tall trees. What am I?", choices: ["Horse", "Elephant", "Giraffe", "Cow"], answer: "Giraffe", thai: "ฉันตัวสูงและมีคอยาวมาก ฉันชอบกินใบไม้จากต้นไม้สูง ฉันคือตัวอะไร?", vocab: "neck (คอ), leaves (ใบไม้)" },
+            { clue: "I am black and white. I look like a horse with stripes. What am I?", choices: ["Zebra", "Cow", "Panda", "Tiger"], answer: "Zebra", thai: "ฉันมีสีดำและขาว ฉันดูเหมือนม้าที่มีลายทาง ฉันคือตัวอะไร?", vocab: "stripes (ลายทาง), black and white (ดำและขาว)" },
+            { clue: "I am green and I love to hop and jump near ponds. I say 'ribbit'. What am I?", choices: ["Fish", "Frog", "Turtle", "Duck"], answer: "Frog", thai: "ฉันตัวสีเขียวและชอบกระโดดใกล้สระน้ำ ฉันร้อง อบๆ ฉันคือตัวอะไร?", vocab: "hop (กระโดด), pond (สระน้ำ)" },
+            { clue: "I am man's best friend. I love to bark and play fetch. What am I?", choices: ["Cat", "Dog", "Rabbit", "Fox"], answer: "Dog", thai: "ฉันคือเพื่อนที่ดีที่สุดของมนุษย์ ฉันชอบเห่าและวิ่งเก็บของ ฉันคือตัวอะไร?", vocab: "bark (เห่า), best friend (เพื่อนสนิท)" },
+            { clue: "I am small, I love to catch mice, and I say 'meow'. What am I?", choices: ["Dog", "Cat", "Mouse", "Hamster"], answer: "Cat", thai: "ฉันตัวเล็ก ชอบจับหนู และร้องเหมียวๆ ฉันคือตัวอะไร?", vocab: "catch (จับ), mice (หนูหลายตัว)" },
+            { clue: "I love to eat carrots and I have long ears. I hop around. What am I?", choices: ["Rabbit", "Monkey", "Pig", "Sheep"], answer: "Rabbit", thai: "ฉันชอบกินแครอทและมีหูยาว ฉันกระโดดไปมา ฉันคือตัวอะไร?", vocab: "carrots (แครอท), long ears (หูยาว)" },
+            { clue: "I give you milk. I am black and white and I say 'moo'. What am I?", choices: ["Goat", "Horse", "Cow", "Sheep"], answer: "Cow", thai: "ฉันให้นมคุณ ฉันมีสีดำและขาว ร้องมอๆ ฉันคือตัวอะไร?", vocab: "milk (นม), moo (เสียงร้องของวัว)" },
+            { clue: "I live in the water, I have fins and gills, and I swim all day. What am I?", choices: ["Fish", "Shark", "Whale", "Frog"], answer: "Fish", thai: "ฉันอาศัยอยู่ในน้ำ มีครีบและเหงือก และว่ายน้ำทั้งวัน ฉันคือตัวอะไร?", vocab: "water (น้ำ), swim (ว่ายน้ำ)" },
+            { clue: "I have feathers, wings, and a beak. I can fly high in the sky. What am I?", choices: ["Bird", "Bat", "Bee", "Frog"], answer: "Bird", thai: "ฉันมีขนนก ปีก และจะงอยปาก ฉันบินได้สูงบนท้องฟ้า ฉันคือตัวอะไร?", vocab: "feathers (ขนนก), wings (ปีก)" },
+            { clue: "I am very slow and I carry a heavy shell on my back. What am I?", choices: ["Snail", "Turtle", "Crab", "Frog"], answer: "Turtle", thai: "ฉันเดินช้ามากและแบกกระดองหนักไว้บนหลัง ฉันคือตัวอะไร?", vocab: "slow (ช้า), shell (กระดอง)" },
+            { clue: "I am pink and fat. I love to roll in the mud. What am I?", choices: ["Pig", "Sheep", "Hippo", "Cow"], answer: "Pig", thai: "ฉันตัวสีชมพูและอ้วน ชอบเกลือกกลิ้งในโคลน ฉันคือตัวอะไร?", vocab: "pink (สีชมพู), mud (โคลน)" },
+            { clue: "I am very smart. I live in the ocean and I love to jump and play. What am I?", choices: ["Shark", "Dolphin", "Fish", "Octopus"], answer: "Dolphin", thai: "ฉันฉลาดมาก อาศัยในมหาสมุทรและชอบกระโดดเล่น ฉันคือตัวอะไร?", vocab: "smart (ฉลาด), ocean (มหาสมุทร)" },
+            { clue: "I have eight arms and I live deep in the sea. What am I?", choices: ["Crab", "Octopus", "Starfish", "Jellyfish"], answer: "Octopus", thai: "ฉันมีแปดแขนและอาศัยอยู่ใต้ทะเลลึก ฉันคือตัวอะไร?", vocab: "eight arms (แปดแขน), sea (ทะเล)" },
+            { clue: "I am black and white, I live in the snow, and I cannot fly. What am I?", choices: ["Polar Bear", "Penguin", "Seal", "Zebra"], answer: "Penguin", thai: "ฉันสีดำและขาว อาศัยในหิมะ และบินไม่ได้ ฉันคือตัวอะไร?", vocab: "snow (หิมะ), fly (บิน)" },
+            { clue: "I have black and orange stripes. I am a big wild cat. What am I?", choices: ["Lion", "Tiger", "Leopard", "Cheetah"], answer: "Tiger", thai: "ฉันมีลายส้มและดำ เป็นเสือป่าขนาดใหญ่ ฉันคือตัวอะไร?", vocab: "stripes (ลายทาง), wild (ป่า/ดุร้าย)" },
+            { clue: "I am brown, I love honey, and I sleep all winter. What am I?", choices: ["Wolf", "Bear", "Fox", "Lion"], answer: "Bear", thai: "ฉันตัวสีน้ำตาล ชอบกินน้ำผึ้ง และนอนหลับตลอดฤดูหนาว ฉันคือตัวอะไร?", vocab: "honey (น้ำผึ้ง), winter (ฤดูหนาว)" },
+            { clue: "I am a pink bird with long legs that loves to stand in water. What am I?", choices: ["Flamingo", "Duck", "Swan", "Ostrich"], answer: "Flamingo", thai: "ฉันคือนกสีชมพูขายาวที่ชอบยืนในน้ำ ฉันคือตัวอะไร?", vocab: "long legs (ขายาว), water (น้ำ)" },
+            { clue: "I am a small insect that makes honey and buzzes around flowers. What am I?", choices: ["Ant", "Bee", "Wasp", "Fly"], answer: "Bee", thai: "ฉันคือแมลงตัวเล็กที่ทำน้ำผึ้งและบินหึ่งๆ รอบดอกไม้ ฉันคือตัวอะไร?", vocab: "insect (แมลง), flowers (ดอกไม้)" },
+            { clue: "I am green and I have a hard shell. I snap with my big mouth and live in rivers. What am I?", choices: ["Alligator", "Crocodile", "Turtle", "Frog"], answer: "Crocodile", thai: "ฉันสีเขียวและมีเกราะแข็ง งับด้วยปากใหญ่และอยู่ริมแม่น้ำ ฉันคือตัวอะไร?", vocab: "mouth (ปาก), river (แม่น้ำ)" },
+            { clue: "I am a jumping animal from Australia and carry my baby in a pouch. What am I?", choices: ["Kangaroo", "Koala", "Rabbit", "Deer"], answer: "Kangaroo", thai: "ฉันคือสัตว์กระโดดจากออสเตรเลียและอุ้มลูกไว้ในกระเป๋าหน้าท้อง ฉันคือตัวอะไร?", vocab: "baby (ลูกสัตว์), pouch (กระเป๋าหน้าท้อง)" },
+            { clue: "I am small and gray. I love to eat cheese and run away from cats. What am I?", choices: ["Mouse", "Hamster", "Rabbit", "Squirrel"], answer: "Mouse", thai: "ฉันตัวเล็กสีเทา ชอบกินชีสและวิ่งหนีแมว ฉันคือตัวอะไร?", vocab: "cheese (เนยแข็ง), run away (วิ่งหนี)" },
+            { clue: "I have a long tail and love to climb trees and eat bananas. What am I?", choices: ["Monkey", "Cat", "Squirrel", "Sloth"], answer: "Monkey", thai: "ฉันมีหางยาวและชอบปีนต้นไม้กินกล้วย ฉันคือตัวอะไร?", vocab: "tail (หาง), climb (ปีน)" },
+            { clue: "I am a bird that cannot fly, but I can run super fast across the desert. What am I?", choices: ["Penguin", "Ostrich", "Duck", "Chicken"], answer: "Ostrich", thai: "ฉันคือนกที่บินไม่ได้ แต่ฉันวิ่งเร็วมากข้ามทะเลทราย ฉันคือตัวอะไร?", vocab: "desert (ทะเลทราย), fast (เร็ว)" },
+            { clue: "I have black and yellow stripes and I sting when I'm mad (not a bee). What am I?", choices: ["Wasp", "Fly", "Ant", "Mosquito"], answer: "Wasp", thai: "ฉันมีลายเหลืองดำและต่อยเวลาโกรธ (ไม่ใช่ผึ้ง) ฉันคือตัวอะไร?", vocab: "sting (ต่อย), mad (โกรธ)" },
+            { clue: "I live in the ocean and have sharp teeth. People call me a scary swimmer. What am I?", choices: ["Whale", "Shark", "Dolphin", "Seal"], answer: "Shark", thai: "ฉันอยู่ในมหาสมุทรและมีฟันแหลมคม คนเรียกว่านักว่ายน้ำน่ากลัว ฉันคือตัวอะไร?", vocab: "sharp teeth (ฟันแหลมคม), ocean (มหาสมุทร)" },
+            { clue: "I have long ears and a soft coat. I am smaller than a horse and carry heavy things. What am I?", choices: ["Donkey", "Horse", "Goat", "Sheep"], answer: "Donkey", thai: "ฉันมีหูยาวและขนหนานุ่ม ตัวเล็กกว่าม้าและแบกของหนัก ฉันคือตัวอะไร?", vocab: "soft (นุ่ม), heavy (หนัก)" },
+            { clue: "I am green, scaly, and I can change my skin color to hide. What am I?", choices: ["Snake", "Chameleon", "Frog", "Lizard"], answer: "Chameleon", thai: "ฉันสีเขียว มีเกล็ด และเปลี่ยนสีผิวเพื่อพรางตัวได้ ฉันคือตัวอะไร?", vocab: "skin color (สีผิว), hide (ซ่อนตัว)" },
+            { clue: "I am a big farm animal with hooves. People love to ride me. What am I?", choices: ["Cow", "Horse", "Donkey", "Pig"], answer: "Horse", thai: "ฉันคือสัตว์ฟาร์มตัวใหญ่มีกีบเท้า คนชอบขี่ฉัน ฉันคือตัวอะไร?", vocab: "farm animal (สัตว์ในฟาร์ม), ride (ขี่)" }
         ];
 
         let currentIndex = 0;
@@ -132,36 +221,89 @@
         const scoreDisplay = document.getElementById("score");
         const currentQDisplay = document.getElementById("current-q");
         const feedback = document.getElementById("feedback");
+        const translationText = document.getElementById("translation-text");
+        const vocabBox = document.getElementById("vocab-box");
+        const vocabContent = document.getElementById("vocab-content");
+        const gameCard = document.getElementById("game-card");
+
+        // ระบบสร้างเสียงเอฟเฟคด้วย Web Audio API (ไม่ต้องใช้ไฟล์นอก)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                // เสียงปิ๊ง สดใส
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // โน้ต D5
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // โน้ต A5
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } else {
+                // เสียงปี๊ด ผิดพลาด
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            }
+        }
 
         function loadQuestion() {
             if (currentIndex < questions.length) {
                 let q = questions[currentIndex];
-                clueText.textContent = q.clue;
-                currentQDisplay.textContent = currentIndex + 1;
-                feedback.textContent = "";
-                choicesBox.innerHTML = "";
+                
+                // เอฟเฟกต์เฟดข้อความเปลี่ยนโจทย์
+                gameCard.style.opacity = "0.7";
+                setTimeout(() => {
+                    clueText.textContent = q.clue;
+                    translationText.textContent = q.thai;
+                    translationText.style.display = "none";
+                    vocabBox.style.display = "none";
+                    vocabContent.textContent = q.vocab;
+                    
+                    currentQDisplay.textContent = currentIndex + 1;
+                    feedback.textContent = "";
+                    choicesBox.innerHTML = "";
 
-                // สร้างปุ่มตัวเลือก 4 ช้อยส์
-                q.choices.forEach(choice => {
-                    let btn = document.createElement("button");
-                    btn.textContent = choice;
-                    btn.className = "choice-btn";
-                    btn.onclick = () => checkAnswer(choice, q.answer);
-                    choicesBox.appendChild(btn);
-                });
+                    q.choices.forEach(choice => {
+                        let btn = document.createElement("button");
+                        btn.textContent = choice;
+                        btn.className = "choice-btn";
+                        btn.onclick = () => checkAnswer(choice, q.answer, btn);
+                        choicesBox.appendChild(btn);
+                    });
+                    gameCard.style.opacity = "1";
+                }, 200);
+
             } else {
                 clueText.textContent = "🎉 Congratulations! You finished the game!";
                 choicesBox.style.display = "none";
+                document.querySelector('.action-bar').style.display = "none";
+                translationText.style.display = "none";
+                vocabBox.style.display = "none";
                 feedback.textContent = `Your final score is ${score} out of ${questions.length}!`;
                 feedback.style.color = "#ff6b6b";
             }
         }
 
-        function checkAnswer(selected, correct) {
-            // ปิดปุ่มทั้งหมดหลังคลิกเพื่อกันกดซ้ำ
+        function checkAnswer(selected, correct, selectedBtn) {
             let buttons = choicesBox.getElementsByTagName("button");
             for (let b of buttons) {
                 b.disabled = true;
+                if (b.textContent === correct) {
+                    b.classList.add("correct");
+                }
             }
 
             if (selected === correct) {
@@ -169,16 +311,45 @@
                 scoreDisplay.textContent = score;
                 feedback.textContent = "✅ Correct! Great job!";
                 feedback.style.color = "#2ed573";
+                playSound('correct');
             } else {
+                selectedBtn.classList.add("wrong");
                 feedback.textContent = `❌ Oops! The correct answer was "${correct}".`;
                 feedback.style.color = "#ff4757";
+                playSound('wrong');
             }
 
+            // แสดงคำศัพท์น่ารู้เมื่อตอบเสร็จ
+            vocabBox.style.display = "block";
+
             currentIndex++;
-            setTimeout(loadQuestion, 1500); // รอ 1.5 วินาทีแล้วไปข้อถัดไป
+            setTimeout(loadQuestion, 2800); // หน่วงเวลาให้น้องๆ ได้อ่านคำศัพท์ก่อนไปข้อต่อไป
         }
 
-        // เริ่มต้นโหลดข้อแรก
+        // ระบบเสียงพูด (Text-to-Speech)
+        function speakClue() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // หยุดเสียงเก่าถ้าค้างอยู่
+                let q = questions[currentIndex];
+                let utterance = new SpeechSynthesisUtterance(q.clue);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9; // พูดช้าลงนิดนึงเพื่อให้เด็กฟังทัน
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Sorry, your browser doesn't support text to speech!");
+            }
+        }
+
+        // เปิด-ปิด คำแปลภาษาไทย
+        function toggleTranslation() {
+            if (translationText.style.display === "block") {
+                translationText.style.display = "none";
+            } else {
+                translationText.style.display = "block";
+            }
+        }
+
+        // โหลดข้อแรกเริ่มต้น
         loadQuestion();
     </script>
 </body>
