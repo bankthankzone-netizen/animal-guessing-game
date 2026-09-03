@@ -101,21 +101,68 @@
             display: none;
             font-style: italic;
         }
-        /* ส่วนแสดงคำศัพท์น่ารู้แบบตัวใหญ่ ชัดเจน */
+        /* ส่วนแสดงคำศัพท์น่ารู้แบบใหม่ */
         .vocab-box {
             background: #e3fafc;
             border: 3px dashed #00b4d8;
-            padding: 15px;
+            padding: 20px;
             border-radius: 20px;
-            text-align: center;
-            font-size: 1.25rem;
+            text-align: left;
+            font-size: 1.2rem;
             margin-bottom: 20px;
-            color: #0077b6;
+            color: #03045e;
             box-shadow: 0 4px 10px rgba(0,180,216,0.1);
         }
-        .vocab-box strong {
-            color: #03045e;
+        .vocab-title {
             font-size: 1.3rem;
+            color: #0077b6;
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .vocab-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .vocab-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .vocab-word {
+            font-weight: bold;
+            color: #023e8a;
+            font-size: 1.25rem;
+        }
+        .vocab-read {
+            color: #e67e22;
+            font-size: 1rem;
+            font-style: italic;
+        }
+        .vocab-meaning {
+            color: #2f3640;
+            font-size: 1.1rem;
+        }
+        .speak-vocab-btn {
+            background: #48dbfb;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: white;
+            transition: 0.2s;
+            box-shadow: 0 3px 0 #0abde3;
+        }
+        .speak-vocab-btn:hover {
+            background: #0abde3;
+            transform: translateY(-2px);
         }
         .choices-container {
             display: grid;
@@ -152,7 +199,6 @@
             background-color: #ff4757 !important;
             box-shadow: 0 5px 0 #cc2131 !important;
         }
-        /* ปุ่มถัดไป */
         .next-btn {
             display: none;
             width: 100%;
@@ -206,51 +252,323 @@
             <div class="translation-box" id="translation-text">คำแปลภาษาไทยจะแสดงที่นี่</div>
         </div>
 
-        <!-- แสดงคำศัพท์น่ารู้ของข้อนั้นๆ ตัวใหญ่ อ่านง่าย -->
+        <!-- ส่วนแสดงคำศัพท์น่ารู้ มีคำอ่าน คำแปล และปุ่มกดฟังเสียงแยกแต่ละคำ -->
         <div class="vocab-box" id="vocab-box">
-            📚 <strong>Vocabulary:</strong> <span id="vocab-content"></span>
+            <div class="vocab-title">📚 Vocabulary (คำศัพท์น่ารู้)</div>
+            <div id="vocab-list-container">
+                <!-- ข้อมูลคำศัพท์จะถูกสร้างด้วย JavaScript -->
+            </div>
         </div>
 
         <div class="choices-container" id="choices-box"></div>
 
         <div id="feedback"></div>
 
-        <!-- ปุ่มสำหรับไปข้อถัดไป -->
         <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question ➡️</button>
     </div>
 
     <script>
         const questions = [
-            { clue: "I am big and gray. I have a long trunk and big ears. What am I?", choices: ["Elephant", "Lion", "Giraffe", "Zebra"], answer: "Elephant", thai: "ฉันตัวใหญ่และสีเทา ฉันมีงวงยาวและหูใหญ่ ฉันคือตัวอะไร?", vocab: "trunk = งวงช้าง, gray = สีเทา" },
-            { clue: "I am the king of the jungle. I have a big mane and I roar. What am I?", choices: ["Tiger", "Lion", "Bear", "Monkey"], answer: "Lion", thai: "ฉันคือราชาแห่งป่า ฉันมีแผงคอใหญ่และคำราม ฉันคือตัวอะไร?", vocab: "mane = แผงคอ, roar = คำราม" },
-            { clue: "I am tall with a very long neck. I love to eat leaves from tall trees. What am I?", choices: ["Horse", "Elephant", "Giraffe", "Cow"], answer: "Giraffe", thai: "ฉันตัวสูงและมีคอยาวมาก ฉันชอบกินใบไม้จากต้นไม้สูง ฉันคือตัวอะไร?", vocab: "neck = คอ, leaves = ใบไม้" },
-            { clue: "I am black and white. I look like a horse with stripes. What am I?", choices: ["Zebra", "Cow", "Panda", "Tiger"], answer: "Zebra", thai: "ฉันมีสีดำและขาว ฉันดูเหมือนม้าที่มีลายทาง ฉันคือตัวอะไร?", vocab: "stripes = ลายทาง, black and white = ดำและขาว" },
-            { clue: "I am green and I love to hop and jump near ponds. I say 'ribbit'. What am I?", choices: ["Fish", "Frog", "Turtle", "Duck"], answer: "Frog", thai: "ฉันตัวสีเขียวและชอบกระโดดใกล้สระน้ำ ฉันร้อง อบๆ ฉันคือตัวอะไร?", vocab: "hop = กระโดด, pond = สระน้ำ" },
-            { clue: "I am man's best friend. I love to bark and play fetch. What am I?", choices: ["Cat", "Dog", "Rabbit", "Fox"], answer: "Dog", thai: "ฉันคือเพื่อนที่ดีที่สุดของมนุษย์ ฉันชอบเห่าและวิ่งเก็บของ ฉันคือตัวอะไร?", vocab: "bark = เห่า, best friend = เพื่อนสนิท" },
-            { clue: "I am small, I love to catch mice, and I say 'meow'. What am I?", choices: ["Dog", "Cat", "Mouse", "Hamster"], answer: "Cat", thai: "ฉันตัวเล็ก ชอบจับหนู และร้องเหมียวๆ ฉันคือตัวอะไร?", vocab: "catch = จับ, mice = หนูหลายตัว" },
-            { clue: "I love to eat carrots and I have long ears. I hop around. What am I?", choices: ["Rabbit", "Monkey", "Pig", "Sheep"], answer: "Rabbit", thai: "ฉันชอบกินแครอทและมีหูยาว ฉันกระโดดไปมา ฉันคือตัวอะไร?", vocab: "carrots = แครอท, long ears = หูยาว" },
-            { clue: "I give you milk. I am black and white and I say 'moo'. What am I?", choices: ["Goat", "Horse", "Cow", "Sheep"], answer: "Cow", thai: "ฉันให้นมคุณ ฉันมีสีดำและขาว ร้องมอๆ ฉันคือตัวอะไร?", vocab: "milk = นม, moo = เสียงร้องของวัว" },
-            { clue: "I live in the water, I have fins and gills, and I swim all day. What am I?", choices: ["Fish", "Shark", "Whale", "Frog"], answer: "Fish", thai: "ฉันอาศัยอยู่ในน้ำ มีครีบและเหงือก และว่ายน้ำทั้งวัน ฉันคือตัวอะไร?", vocab: "water = น้ำ, swim = ว่ายน้ำ" },
-            { clue: "I have feathers, wings, and a beak. I can fly high in the sky. What am I?", choices: ["Bird", "Bat", "Bee", "Frog"], answer: "Bird", thai: "ฉันมีขนนก ปีก และจะงอยปาก ฉันบินได้สูงบนท้องฟ้า ฉันคือตัวอะไร?", vocab: "feathers = ขนนก, wings = ปีก" },
-            { clue: "I am very slow and I carry a heavy shell on my back. What am I?", choices: ["Snail", "Turtle", "Crab", "Frog"], answer: "Turtle", thai: "ฉันเดินช้ามากและแบกกระดองหนักไว้บนหลัง ฉันคือตัวอะไร?", vocab: "slow = ช้า, shell = กระดอง" },
-            { clue: "I am pink and fat. I love to roll in the mud. What am I?", choices: ["Pig", "Sheep", "Hippo", "Cow"], answer: "Pig", thai: "ฉันตัวสีชมพูและอ้วน ชอบเกลือกกลิ้งในโคลน ฉันคือตัวอะไร?", vocab: "pink = สีชมพู, mud = โคลน" },
-            { clue: "I am very smart. I live in the ocean and I love to jump and play. What am I?", choices: ["Shark", "Dolphin", "Fish", "Octopus"], answer: "Dolphin", thai: "ฉันฉลาดมาก อาศัยในมหาสมุทรและชอบกระโดดเล่น ฉันคือตัวอะไร?", vocab: "smart = ฉลาด, ocean = มหาสมุทร" },
-            { clue: "I have eight arms and I live deep in the sea. What am I?", choices: ["Crab", "Octopus", "Starfish", "Jellyfish"], answer: "Octopus", thai: "ฉันมีแปดแขนและอาศัยอยู่ใต้ทะเลลึก ฉันคือตัวอะไร?", vocab: "eight arms = แปดแขน, sea = ทะเล" },
-            { clue: "I am black and white, I live in the snow, and I cannot fly. What am I?", choices: ["Polar Bear", "Penguin", "Seal", "Zebra"], answer: "Penguin", thai: "ฉันสีดำและขาว อาศัยในหิมะ และบินไม่ได้ ฉันคือตัวอะไร?", vocab: "snow = หิมะ, fly = บิน" },
-            { clue: "I have black and orange stripes. I am a big wild cat. What am I?", choices: ["Lion", "Tiger", "Leopard", "Cheetah"], answer: "Tiger", thai: "ฉันมีลายส้มและดำ เป็นเสือป่าขนาดใหญ่ ฉันคือตัวอะไร?", vocab: "stripes = ลายทาง, wild = ป่า/ดุร้าย" },
-            { clue: "I am brown, I love honey, and I sleep all winter. What am I?", choices: ["Wolf", "Bear", "Fox", "Lion"], answer: "Bear", thai: "ฉันตัวสีน้ำตาล ชอบกินน้ำผึ้ง และนอนหลับตลอดฤดูหนาว ฉันคือตัวอะไร?", vocab: "honey = น้ำผึ้ง, winter = ฤดูหนาว" },
-            { clue: "I am a pink bird with long legs that loves to stand in water. What am I?", choices: ["Flamingo", "Duck", "Swan", "Ostrich"], answer: "Flamingo", thai: "ฉันคือนกสีชมพูขายาวที่ชอบยืนในน้ำ ฉันคือตัวอะไร?", vocab: "long legs = ขายาว, water = น้ำ" },
-            { clue: "I am a small insect that makes honey and buzzes around flowers. What am I?", choices: ["Ant", "Bee", "Wasp", "Fly"], answer: "Bee", thai: "ฉันคือแมลงตัวเล็กที่ทำน้ำผึ้งและบินหึ่งๆ รอบดอกไม้ ฉันคือตัวอะไร?", vocab: "insect = แมลง, flowers = ดอกไม้" },
-            { clue: "I am green and I have a hard shell. I snap with my big mouth and live in rivers. What am I?", choices: ["Alligator", "Crocodile", "Turtle", "Frog"], answer: "Crocodile", thai: "ฉันสีเขียวและมีเกราะแข็ง งับด้วยปากใหญ่และอยู่ริมแม่น้ำ ฉันคือตัวอะไร?", vocab: "mouth = ปาก, river = แม่น้ำ" },
-            { clue: "I am a jumping animal from Australia and carry my baby in a pouch. What am I?", choices: ["Kangaroo", "Koala", "Rabbit", "Deer"], answer: "Kangaroo", thai: "ฉันคือสัตว์กระโดดจากออสเตรเลียและอุ้มลูกไว้ในกระเป๋าหน้าท้อง ฉันคือตัวอะไร?", vocab: "baby = ลูกสัตว์, pouch = กระเป๋าหน้าท้อง" },
-            { clue: "I am small and gray. I love to eat cheese and run away from cats. What am I?", choices: ["Mouse", "Hamster", "Rabbit", "Squirrel"], answer: "Mouse", thai: "ฉันตัวเล็กสีเทา ชอบกินชีสและวิ่งหนีแมว ฉันคือตัวอะไร?", vocab: "cheese = เนยแข็ง, run away = วิ่งหนี" },
-            { clue: "I have a long tail and love to climb trees and eat bananas. What am I?", choices: ["Monkey", "Cat", "Squirrel", "Sloth"], answer: "Monkey", thai: "ฉันมีหางยาวและชอบปีนต้นไม้กินกล้วย ฉันคือตัวอะไร?", vocab: "tail = หาง, climb = ปีน" },
-            { clue: "I am a bird that cannot fly, but I can run super fast across the desert. What am I?", choices: ["Penguin", "Ostrich", "Duck", "Chicken"], answer: "Ostrich", thai: "ฉันคือนกที่บินไม่ได้ แต่ฉันวิ่งเร็วมากข้ามทะเลทราย ฉันคือตัวอะไร?", vocab: "desert = ทะเลทราย, fast = เร็ว" },
-            { clue: "I have black and yellow stripes and I sting when I'm mad (not a bee). What am I?", choices: ["Wasp", "Fly", "Ant", "Mosquito"], answer: "Wasp", thai: "ฉันมีลายเหลืองดำและต่อยเวลาโกรธ (ไม่ใช่ผึ้ง) ฉันคือตัวอะไร?", vocab: "sting = ต่อย, mad = โกรธ" },
-            { clue: "I live in the ocean and have sharp teeth. People call me a scary swimmer. What am I?", choices: ["Whale", "Shark", "Dolphin", "Seal"], answer: "Shark", thai: "ฉันอยู่ในมหาสมุทรและมีฟันแหลมคม คนเรียกว่านักว่ายน้ำน่ากลัว ฉันคือตัวอะไร?", vocab: "sharp teeth = ฟันแหลมคม, ocean = มหาสมุทร" },
-            { clue: "I have long ears and a soft coat. I am smaller than a horse and carry heavy things. What am I?", choices: ["Donkey", "Horse", "Goat", "Sheep"], answer: "Donkey", thai: "ฉันมีหูยาวและขนหนานุ่ม ตัวเล็กกว่าม้าและแบกของหนัก ฉันคือตัวอะไร?", vocab: "soft = นุ่ม, heavy = หนัก" },
-            { clue: "I am green, scaly, and I can change my skin color to hide. What am I?", choices: ["Snake", "Chameleon", "Frog", "Lizard"], answer: "Chameleon", thai: "ฉันสีเขียว มีเกล็ด และเปลี่ยนสีผิวเพื่อพรางตัวได้ ฉันคือตัวอะไร?", vocab: "skin color = สีผิว, hide = ซ่อนตัว" },
-            { clue: "I am a big farm animal with hooves. People love to ride me. What am I?", choices: ["Cow", "Horse", "Donkey", "Pig"], answer: "Horse", thai: "ฉันคือสัตว์ฟาร์มตัวใหญ่มีกีบเท้า คนชอบขี่ฉัน ฉันคือตัวอะไร?", vocab: "farm animal = สัตว์ในฟาร์ม, ride = ขี่" }
+            { 
+                clue: "I am big and gray. I have a long trunk and big ears. What am I?", 
+                choices: ["Elephant", "Lion", "Giraffe", "Zebra"], 
+                answer: "Elephant", 
+                thai: "ฉันตัวใหญ่และสีเทา ฉันมีงวงยาวและหูใหญ่ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "trunk", read: "ทรักคฺ", meaning: "งวงช้าง" },
+                    { word: "gray", read: "เกรย์", meaning: "สีเทา" }
+                ] 
+            },
+            { 
+                clue: "I am the king of the jungle. I have a big mane and I roar. What am I?", 
+                choices: ["Tiger", "Lion", "Bear", "Monkey"], 
+                answer: "Lion", 
+                thai: "ฉันคือราชาแห่งป่า ฉันมีแผงคอใหญ่และคำราม ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "mane", read: "เมน", meaning: "แผงคอ" },
+                    { word: "roar", read: "รอร์", meaning: "คำราม" }
+                ] 
+            },
+            { 
+                clue: "I am tall with a very long neck. I love to eat leaves from tall trees. What am I?", 
+                choices: ["Horse", "Elephant", "Giraffe", "Cow"], 
+                answer: "Giraffe", 
+                thai: "ฉันตัวสูงและมีคอยาวมาก ฉันชอบกินใบไม้จากต้นไม้สูง ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "neck", read: "เน็ค", meaning: "คอ" },
+                    { word: "leaves", read: "ลีฟวส์", meaning: "ใบไม้" }
+                ] 
+            },
+            { 
+                clue: "I am black and white. I look like a horse with stripes. What am I?", 
+                choices: ["Zebra", "Cow", "Panda", "Tiger"], 
+                answer: "Zebra", 
+                thai: "ฉันมีสีดำและขาว ฉันดูเหมือนม้าที่มีลายทาง ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "stripes", read: "สไตรป์ส", meaning: "ลายทาง" },
+                    { word: "black and white", read: "แบล็ค แอนด์ ไวท์", meaning: "สีดำและสีขาว" }
+                ] 
+            },
+            { 
+                clue: "I am green and I love to hop and jump near ponds. I say 'ribbit'. What am I?", 
+                choices: ["Fish", "Frog", "Turtle", "Duck"], 
+                answer: "Frog", 
+                thai: "ฉันตัวสีเขียวและชอบกระโดดใกล้สระน้ำ ฉันร้อง อบๆ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "hop", read: "ฮ็อพ", meaning: "กระโดด" },
+                    { word: "pond", read: "พอนด์", meaning: "สระน้ำ" }
+                ] 
+            },
+            { 
+                clue: "I am man's best friend. I love to bark and play fetch. What am I?", 
+                choices: ["Cat", "Dog", "Rabbit", "Fox"], 
+                answer: "Dog", 
+                thai: "ฉันคือเพื่อนที่ดีที่สุดของมนุษย์ ฉันชอบเห่าและวิ่งเก็บของ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "bark", read: "บาร์ค", meaning: "เห่า" },
+                    { word: "best friend", read: "เบสท์ เฟรนด์", meaning: "เพื่อนสนิท" }
+                ] 
+            },
+            { 
+                clue: "I am small, I love to catch mice, and I say 'meow'. What am I?", 
+                choices: ["Dog", "Cat", "Mouse", "Hamster"], 
+                answer: "Cat", 
+                thai: "ฉันตัวเล็ก ชอบจับหนู และร้องเหมียวๆ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "catch", read: "แคทชฺ", meaning: "จับ" },
+                    { word: "mice", read: "ไมซฺ", meaning: "หนูหลายตัว" }
+                ] 
+            },
+            { 
+                clue: "I love to eat carrots and I have long ears. I hop around. What am I?", 
+                choices: ["Rabbit", "Monkey", "Pig", "Sheep"], 
+                answer: "Rabbit", 
+                thai: "ฉันชอบกินแครอทและมีหูยาว ฉันกระโดดไปมา ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "carrots", read: "แครอทสฺ", meaning: "แครอท" },
+                    { word: "long ears", read: "ลอง อีร์ส", meaning: "หูยาว" }
+                ] 
+            },
+            { 
+                clue: "I give you milk. I am black and white and I say 'moo'. What am I?", 
+                choices: ["Goat", "Horse", "Cow", "Sheep"], 
+                answer: "Cow", 
+                thai: "ฉันให้นมคุณ ฉันมีสีดำและขาว ร้องมอๆ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "milk", read: "มิลค์", meaning: "นม" },
+                    { word: "moo", read: "มู", meaning: "เสียงร้องของวัว" }
+                ] 
+            },
+            { 
+                clue: "I live in the water, I have fins and gills, and I swim all day. What am I?", 
+                choices: ["Fish", "Shark", "Whale", "Frog"], 
+                answer: "Fish", 
+                thai: "ฉันอาศัยอยู่ในน้ำ มีครีบและเหงือก และว่ายน้ำทั้งวัน ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "water", read: "วอเทอร์", meaning: "น้ำ" },
+                    { word: "swim", read: "สวิม", meaning: "ว่ายน้ำ" }
+                ] 
+            },
+            { 
+                clue: "I have feathers, wings, and a beak. I can fly high in the sky. What am I?", 
+                choices: ["Bird", "Bat", "Bee", "Frog"], 
+                answer: "Bird", 
+                thai: "ฉันมีขนนก ปีก และจะงอยปาก ฉันบินได้สูงบนท้องฟ้า ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "feathers", read: "เฟเธอร์ส", meaning: "ขนนก" },
+                    { word: "wings", read: "วิงส์", meaning: "ปีก" }
+                ] 
+            },
+            { 
+                clue: "I am very slow and I carry a heavy shell on my back. What am I?", 
+                choices: ["Snail", "Turtle", "Crab", "Frog"], 
+                answer: "Turtle", 
+                thai: "ฉันเดินช้ามากและแบกกระดองหนักไว้บนหลัง ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "slow", read: "สโลว์", meaning: "ช้า" },
+                    { word: "shell", read: "เชลล์", meaning: "กระดอง" }
+                ] 
+            },
+            { 
+                clue: "I am pink and fat. I love to roll in the mud. What am I?", 
+                choices: ["Pig", "Sheep", "Hippo", "Cow"], 
+                answer: "Pig", 
+                thai: "ฉันตัวสีชมพูและอ้วน ชอบเกลือกกลิ้งในโคลน ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "pink", read: "พิงค์", meaning: "สีชมพู" },
+                    { word: "mud", read: "มัด", meaning: "โคลน" }
+                ] 
+            },
+            { 
+                clue: "I am very smart. I live in the ocean and I love to jump and play. What am I?", 
+                choices: ["Shark", "Dolphin", "Fish", "Octopus"], 
+                answer: "Dolphin", 
+                thai: "ฉันฉลาดมาก อาศัยในมหาสมุทรและชอบกระโดดเล่น ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "smart", read: "สมาร์ท", meaning: "ฉลาด" },
+                    { word: "ocean", read: "โอเชียน", meaning: "มหาสมุทร" }
+                ] 
+            },
+            { 
+                clue: "I have eight arms and I live deep in the sea. What am I?", 
+                choices: ["Crab", "Octopus", "Starfish", "Jellyfish"], 
+                answer: "Octopus", 
+                thai: "ฉันมีแปดแขนและอาศัยอยู่ใต้ทะเลลึก ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "eight arms", read: "เอท อาร์มส์", meaning: "แปดแขน" },
+                    { word: "sea", read: "ซี", meaning: "ทะเล" }
+                ] 
+            },
+            { 
+                clue: "I am black and white, I live in the snow, and I cannot fly. What am I?", 
+                choices: ["Polar Bear", "Penguin", "Seal", "Zebra"], 
+                answer: "Penguin", 
+                thai: "ฉันสีดำและขาว อาศัยในหิมะ และบินไม่ได้ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "snow", read: "สโนว์", meaning: "หิมะ" },
+                    { word: "fly", read: "ฟลาย", meaning: "บิน" }
+                ] 
+            },
+            { 
+                clue: "I have black and orange stripes. I am a big wild cat. What am I?", 
+                choices: ["Lion", "Tiger", "Leopard", "Cheetah"], 
+                answer: "Tiger", 
+                thai: "ฉันมีลายส้มและดำ เป็นเสือป่าขนาดใหญ่ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "stripes", read: "สไตรป์ส", meaning: "ลายทาง" },
+                    { word: "wild", read: "ไวลด์", meaning: "ป่า / ดุร้าย" }
+                ] 
+            },
+            { 
+                clue: "I am brown, I love honey, and I sleep all winter. What am I?", 
+                choices: ["Wolf", "Bear", "Fox", "Lion"], 
+                answer: "Bear", 
+                thai: "ฉันตัวสีน้ำตาล ชอบกินน้ำผึ้ง และนอนหลับตลอดฤดูหนาว ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "honey", read: "ฮันนี", meaning: "น้ำผึ้ง" },
+                    { word: "winter", read: "วินเทอร์", meaning: "ฤดูหนาว" }
+                ] 
+            },
+            { 
+                clue: "I am a pink bird with long legs that loves to stand in water. What am I?", 
+                choices: ["Flamingo", "Duck", "Swan", "Ostrich"], 
+                answer: "Flamingo", 
+                thai: "ฉันคือนกสีชมพูขายาวที่ชอบยืนในน้ำ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "long legs", read: "ลอง เล็กส์", meaning: "ขายาว" },
+                    { word: "water", read: "วอเทอร์", meaning: "น้ำ" }
+                ] 
+            },
+            { 
+                clue: "I am a small insect that makes honey and buzzes around flowers. What am I?", 
+                choices: ["Ant", "Bee", "Wasp", "Fly"], 
+                answer: "Bee", 
+                thai: "ฉันคือแมลงตัวเล็กที่ทำน้ำผึ้งและบินหึ่งๆ รอบดอกไม้ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "insect", read: "อินเซ็คท์", meaning: "แมลง" },
+                    { word: "flowers", read: "ฟลาวเวอร์ส", meaning: "ดอกไม้" }
+                ] 
+            },
+            { 
+                clue: "I am green and I have a hard shell. I snap with my big mouth and live in rivers. What am I?", 
+                choices: ["Alligator", "Crocodile", "Turtle", "Frog"], 
+                answer: "Crocodile", 
+                thai: "ฉันสีเขียวและมีเกราะแข็ง งับด้วยปากใหญ่และอยู่ริมแม่น้ำ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "mouth", read: "เมาท์ธ", meaning: "ปาก" },
+                    { word: "river", read: "ริเวอร์", meaning: "แม่น้ำ" }
+                ] 
+            },
+            { 
+                clue: "I am a jumping animal from Australia and carry my baby in a pouch. What am I?", 
+                choices: ["Kangaroo", "Koala", "Rabbit", "Deer"], 
+                answer: "Kangaroo", 
+                thai: "ฉันคือสัตว์กระโดดจากออสเตรเลียและอุ้มลูกไว้ในกระเป๋าหน้าท้อง ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "baby", read: "เบบี้", meaning: "ลูกสัตว์" },
+                    { word: "pouch", read: "พาวชฺ", meaning: "กระเป๋าหน้าท้อง" }
+                ] 
+            },
+            { 
+                clue: "I am small and gray. I love to eat cheese and run away from cats. What am I?", 
+                choices: ["Mouse", "Hamster", "Rabbit", "Squirrel"], 
+                answer: "Mouse", 
+                thai: "ฉันตัวเล็กสีเทา ชอบกินชีสและวิ่งหนีแมว ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "cheese", read: "ชีส", meaning: "เนยแข็ง" },
+                    { word: "run away", read: "รัน อะเวย์", meaning: "วิ่งหนี" }
+                ] 
+            },
+            { 
+                clue: "I have a long tail and love to climb trees and eat bananas. What am I?", 
+                choices: ["Monkey", "Cat", "Squirrel", "Sloth"], 
+                answer: "Monkey", 
+                thai: "ฉันมีหางยาวและชอบปีนต้นไม้กินกล้วย ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "tail", read: "เทล", meaning: "หาง" },
+                    { word: "climb", read: "ไคลม์", meaning: "ปีน" }
+                ] 
+            },
+            { 
+                clue: "I am a bird that cannot fly, but I can run super fast across the desert. What am I?", 
+                choices: ["Penguin", "Ostrich", "Duck", "Chicken"], 
+                answer: "Ostrich", 
+                thai: "ฉันคือนกที่บินไม่ได้ แต่ฉันวิ่งเร็วมากข้ามทะเลทราย ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "desert", read: "เดเซิร์ท", meaning: "ทะเลทราย" },
+                    { word: "fast", read: "ฟาสต์", meaning: "เร็ว" }
+                ] 
+            },
+            { 
+                clue: "I have black and yellow stripes and I sting when I'm mad (not a bee). What am I?", 
+                choices: ["Wasp", "Fly", "Ant", "Mosquito"], 
+                answer: "Wasp", 
+                thai: "ฉันมีลายเหลืองดำและต่อยเวลาโกรธ (ไม่ใช่ผึ้ง) ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "sting", read: "สตริง", meaning: "ต่อย" },
+                    { word: "mad", read: "แมด", meaning: "โกรธ" }
+                ] 
+            },
+            { 
+                clue: "I live in the ocean and have sharp teeth. People call me a scary swimmer. What am I?", 
+                choices: ["Whale", "Shark", "Dolphin", "Seal"], 
+                answer: "Shark", 
+                thai: "ฉันอยู่ในมหาสมุทรและมีฟันแหลมคม คนเรียกว่านักว่ายน้ำน่ากลัว ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "sharp teeth", read: "ชาร์ป ทีธ", meaning: "ฟันแหลมคม" },
+                    { word: "ocean", read: "โอเชียน", meaning: "มหาสมุทร" }
+                ] 
+            },
+            { 
+                clue: "I have long ears and a soft coat. I am smaller than a horse and carry heavy things. What am I?", 
+                choices: ["Donkey", "Horse", "Goat", "Sheep"], 
+                answer: "Donkey", 
+                thai: "ฉันมีหูยาวและขนหนานุ่ม ตัวเล็กกว่าม้าและแบกของหนัก ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "soft", read: "ซอฟต์", meaning: "นุ่ม" },
+                    { word: "heavy", read: "เฮฟวี", meaning: "หนัก" }
+                ] 
+            },
+            { 
+                clue: "I am green, scaly, and I can change my skin color to hide. What am I?", 
+                choices: ["Snake", "Chameleon", "Frog", "Lizard"], 
+                answer: "Chameleon", 
+                thai: "ฉันสีเขียว มีเกล็ด และเปลี่ยนสีผิวเพื่อพรางตัวได้ ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "skin color", read: "สกิน คัลเลอร์", meaning: "สีผิว" },
+                    { word: "hide", read: "ไฮด์", meaning: "ซ่อนตัว" }
+                ] 
+            },
+            { 
+                clue: "I am a big farm animal with hooves. People love to ride me. What am I?", 
+                choices: ["Cow", "Horse", "Donkey", "Pig"], 
+                answer: "Horse", 
+                thai: "ฉันคือสัตว์ฟาร์มตัวใหญ่มีกีบเท้า คนชอบขี่ฉัน ฉันคือตัวอะไร?", 
+                vocab: [
+                    { word: "farm animal", read: "ฟาร์ม แอนิมอล", meaning: "สัตว์ในฟาร์ม" },
+                    { word: "ride", read: "ไรด์", meaning: "ขี่" }
+                ] 
+            }
         ];
 
         let currentIndex = 0;
@@ -262,8 +580,7 @@
         const currentQDisplay = document.getElementById("current-q");
         const feedback = document.getElementById("feedback");
         const translationText = document.getElementById("translation-text");
-        const vocabBox = document.getElementById("vocab-box");
-        const vocabContent = document.getElementById("vocab-content");
+        const vocabListContainer = document.getElementById("vocab-list-container");
         const nextBtn = document.getElementById("next-btn");
         const gameCard = document.getElementById("game-card");
 
@@ -307,12 +624,26 @@
                     clueText.textContent = q.clue;
                     translationText.textContent = q.thai;
                     translationText.style.display = "none";
-                    vocabContent.textContent = q.vocab;
-                    vocabBox.style.display = "block"; // แสดงคำศัพท์ทันที
                     
+                    // สร้างรายการคำศัพท์น่ารู้ พร้อมคำอ่าน คำแปล และปุ่มฟังเสียง
+                    vocabListContainer.innerHTML = "";
+                    q.vocab.forEach(item => {
+                        let itemDiv = document.createElement("div");
+                        itemDiv.className = "vocab-item";
+                        
+                        itemDiv.innerHTML = `
+                            <div class="vocab-info">
+                                <span class="vocab-word">${item.word} <span class="vocab-read">(${item.read})</span></span>
+                                <span class="vocab-meaning">= ${item.meaning}</span>
+                            </div>
+                            <button class="speak-vocab-btn" onclick="speakWord('${item.word}')">🔊 ฟัง</button>
+                        `;
+                        vocabListContainer.appendChild(itemDiv);
+                    });
+
                     currentQDisplay.textContent = currentIndex + 1;
                     feedback.textContent = "";
-                    nextBtn.style.display = "none"; // ซ่อนปุ่มถัดไปตอนเริ่มข้อใหม่
+                    nextBtn.style.display = "none";
                     choicesBox.innerHTML = "";
 
                     q.choices.forEach(choice => {
@@ -328,7 +659,7 @@
             } else {
                 clueText.textContent = "🎉 Congratulations! You finished the game!";
                 choicesBox.style.display = "none";
-                vocabBox.style.display = "none";
+                document.getElementById("vocab-box").style.display = "none";
                 document.querySelector('.action-bar').style.display = "none";
                 translationText.style.display = "none";
                 feedback.textContent = `Your final score is ${score} out of ${questions.length}!`;
@@ -340,7 +671,7 @@
         function checkAnswer(selected, correct, selectedBtn) {
             let buttons = choicesBox.getElementsByTagName("button");
             for (let b of buttons) {
-                b.disabled = true; // ล็อคปุ่มทั้งหมดหลังเลือก
+                b.disabled = true;
                 if (b.textContent === correct) {
                     b.classList.add("correct");
                 }
@@ -359,7 +690,6 @@
                 playSound('wrong');
             }
 
-            // แสดงปุ่มถัดไปเพื่อให้ผู้เล่นกดไปข้อต่อไป
             nextBtn.style.display = "block";
         }
 
@@ -378,6 +708,17 @@
                 window.speechSynthesis.speak(utterance);
             } else {
                 alert("Sorry, your browser doesn't support text to speech!");
+            }
+        }
+
+        // ฟังก์ชันสำหรับอ่านออกเสียงคำศัพท์แต่ละคำ
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; // พูดช้าลงเล็กน้อยเพื่อให้เด็กฝึกตามได้ง่าย
+                window.speechSynthesis.speak(utterance);
             }
         }
 
