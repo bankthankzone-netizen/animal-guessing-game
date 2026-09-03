@@ -25,6 +25,7 @@
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             transition: all 0.3s ease;
+            position: relative;
         }
         h1 {
             color: #ff6b6b;
@@ -101,7 +102,6 @@
             display: none;
             font-style: italic;
         }
-        /* ส่วนแสดงคำศัพท์น่ารู้แบบใหม่ */
         .vocab-box {
             background: #e3fafc;
             border: 3px dashed #00b4d8;
@@ -229,9 +229,75 @@
             min-height: 35px;
             margin-top: 10px;
         }
+
+        /* --- สไตล์สำหรับ Popup คะแนน --- */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .popup-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .popup-card {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transform: scale(0.5);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .popup-overlay.show .popup-card {
+            transform: scale(1);
+        }
+        .popup-card h2 {
+            color: #2ed573;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .popup-card p {
+            font-size: 1.3rem;
+            color: #57606f;
+            margin-bottom: 20px;
+        }
+        .popup-btn {
+            background-color: #2ed573;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #20bf55;
+        }
+        .popup-btn:hover {
+            background-color: #20bf55;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Popup แจ้งคะแนนเมื่อตอบถูก -->
+    <div class="popup-overlay" id="score-popup">
+        <div class="popup-card">
+            <h2 id="popup-title">🎉 Excellent!</h2>
+            <p id="popup-msg">You got +1 Point!</p>
+            <button class="popup-btn" onclick="closePopup()">Awesome! 🌟</button>
+        </div>
+    </div>
 
     <div class="container" id="game-card">
         <h1>🦁 Animal Guessing Game 🐶</h1>
@@ -252,12 +318,9 @@
             <div class="translation-box" id="translation-text">คำแปลภาษาไทยจะแสดงที่นี่</div>
         </div>
 
-        <!-- ส่วนแสดงคำศัพท์น่ารู้ มีคำอ่าน คำแปล และปุ่มกดฟังเสียงแยกแต่ละคำ -->
         <div class="vocab-box" id="vocab-box">
             <div class="vocab-title">📚 Vocabulary (คำศัพท์น่ารู้)</div>
-            <div id="vocab-list-container">
-                <!-- ข้อมูลคำศัพท์จะถูกสร้างด้วย JavaScript -->
-            </div>
+            <div id="vocab-list-container"></div>
         </div>
 
         <div class="choices-container" id="choices-box"></div>
@@ -273,6 +336,7 @@
                 clue: "I am big and gray. I have a long trunk and big ears. What am I?", 
                 choices: ["Elephant", "Lion", "Giraffe", "Zebra"], 
                 answer: "Elephant", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/elephant_call.ogg",
                 thai: "ฉันตัวใหญ่และสีเทา ฉันมีงวงยาวและหูใหญ่ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "trunk", read: "ทรักคฺ", meaning: "งวงช้าง" },
@@ -283,6 +347,7 @@
                 clue: "I am the king of the jungle. I have a big mane and I roar. What am I?", 
                 choices: ["Tiger", "Lion", "Bear", "Monkey"], 
                 answer: "Lion", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/lion_roar.ogg",
                 thai: "ฉันคือราชาแห่งป่า ฉันมีแผงคอใหญ่และคำราม ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "mane", read: "เมน", meaning: "แผงคอ" },
@@ -293,6 +358,7 @@
                 clue: "I am tall with a very long neck. I love to eat leaves from tall trees. What am I?", 
                 choices: ["Horse", "Elephant", "Giraffe", "Cow"], 
                 answer: "Giraffe", 
+                animalSound: "", 
                 thai: "ฉันตัวสูงและมีคอยาวมาก ฉันชอบกินใบไม้จากต้นไม้สูง ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "neck", read: "เน็ค", meaning: "คอ" },
@@ -303,6 +369,7 @@
                 clue: "I am black and white. I look like a horse with stripes. What am I?", 
                 choices: ["Zebra", "Cow", "Panda", "Tiger"], 
                 answer: "Zebra", 
+                animalSound: "", 
                 thai: "ฉันมีสีดำและขาว ฉันดูเหมือนม้าที่มีลายทาง ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "stripes", read: "สไตรป์ส", meaning: "ลายทาง" },
@@ -313,6 +380,7 @@
                 clue: "I am green and I love to hop and jump near ponds. I say 'ribbit'. What am I?", 
                 choices: ["Fish", "Frog", "Turtle", "Duck"], 
                 answer: "Frog", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/frog_croaking.ogg",
                 thai: "ฉันตัวสีเขียวและชอบกระโดดใกล้สระน้ำ ฉันร้อง อบๆ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "hop", read: "ฮ็อพ", meaning: "กระโดด" },
@@ -323,6 +391,7 @@
                 clue: "I am man's best friend. I love to bark and play fetch. What am I?", 
                 choices: ["Cat", "Dog", "Rabbit", "Fox"], 
                 answer: "Dog", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/dog_barking.ogg",
                 thai: "ฉันคือเพื่อนที่ดีที่สุดของมนุษย์ ฉันชอบเห่าและวิ่งเก็บของ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "bark", read: "บาร์ค", meaning: "เห่า" },
@@ -333,6 +402,7 @@
                 clue: "I am small, I love to catch mice, and I say 'meow'. What am I?", 
                 choices: ["Dog", "Cat", "Mouse", "Hamster"], 
                 answer: "Cat", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/cat_meow.ogg",
                 thai: "ฉันตัวเล็ก ชอบจับหนู และร้องเหมียวๆ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "catch", read: "แคทชฺ", meaning: "จับ" },
@@ -343,6 +413,7 @@
                 clue: "I love to eat carrots and I have long ears. I hop around. What am I?", 
                 choices: ["Rabbit", "Monkey", "Pig", "Sheep"], 
                 answer: "Rabbit", 
+                animalSound: "", 
                 thai: "ฉันชอบกินแครอทและมีหูยาว ฉันกระโดดไปมา ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "carrots", read: "แครอทสฺ", meaning: "แครอท" },
@@ -353,6 +424,7 @@
                 clue: "I give you milk. I am black and white and I say 'moo'. What am I?", 
                 choices: ["Goat", "Horse", "Cow", "Sheep"], 
                 answer: "Cow", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/cow_mooing.ogg",
                 thai: "ฉันให้นมคุณ ฉันมีสีดำและขาว ร้องมอๆ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "milk", read: "มิลค์", meaning: "นม" },
@@ -363,6 +435,7 @@
                 clue: "I live in the water, I have fins and gills, and I swim all day. What am I?", 
                 choices: ["Fish", "Shark", "Whale", "Frog"], 
                 answer: "Fish", 
+                animalSound: "", 
                 thai: "ฉันอาศัยอยู่ในน้ำ มีครีบและเหงือก และว่ายน้ำทั้งวัน ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "water", read: "วอเทอร์", meaning: "น้ำ" },
@@ -373,6 +446,7 @@
                 clue: "I have feathers, wings, and a beak. I can fly high in the sky. What am I?", 
                 choices: ["Bird", "Bat", "Bee", "Frog"], 
                 answer: "Bird", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/birds_chirping.ogg",
                 thai: "ฉันมีขนนก ปีก และจะงอยปาก ฉันบินได้สูงบนท้องฟ้า ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "feathers", read: "เฟเธอร์ส", meaning: "ขนนก" },
@@ -383,6 +457,7 @@
                 clue: "I am very slow and I carry a heavy shell on my back. What am I?", 
                 choices: ["Snail", "Turtle", "Crab", "Frog"], 
                 answer: "Turtle", 
+                animalSound: "", 
                 thai: "ฉันเดินช้ามากและแบกกระดองหนักไว้บนหลัง ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "slow", read: "สโลว์", meaning: "ช้า" },
@@ -393,6 +468,7 @@
                 clue: "I am pink and fat. I love to roll in the mud. What am I?", 
                 choices: ["Pig", "Sheep", "Hippo", "Cow"], 
                 answer: "Pig", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/pig_oink.ogg",
                 thai: "ฉันตัวสีชมพูและอ้วน ชอบเกลือกกลิ้งในโคลน ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "pink", read: "พิงค์", meaning: "สีชมพู" },
@@ -403,6 +479,7 @@
                 clue: "I am very smart. I live in the ocean and I love to jump and play. What am I?", 
                 choices: ["Shark", "Dolphin", "Fish", "Octopus"], 
                 answer: "Dolphin", 
+                animalSound: "", 
                 thai: "ฉันฉลาดมาก อาศัยในมหาสมุทรและชอบกระโดดเล่น ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "smart", read: "สมาร์ท", meaning: "ฉลาด" },
@@ -413,6 +490,7 @@
                 clue: "I have eight arms and I live deep in the sea. What am I?", 
                 choices: ["Crab", "Octopus", "Starfish", "Jellyfish"], 
                 answer: "Octopus", 
+                animalSound: "", 
                 thai: "ฉันมีแปดแขนและอาศัยอยู่ใต้ทะเลลึก ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "eight arms", read: "เอท อาร์มส์", meaning: "แปดแขน" },
@@ -423,6 +501,7 @@
                 clue: "I am black and white, I live in the snow, and I cannot fly. What am I?", 
                 choices: ["Polar Bear", "Penguin", "Seal", "Zebra"], 
                 answer: "Penguin", 
+                animalSound: "", 
                 thai: "ฉันสีดำและขาว อาศัยในหิมะ และบินไม่ได้ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "snow", read: "สโนว์", meaning: "หิมะ" },
@@ -433,6 +512,7 @@
                 clue: "I have black and orange stripes. I am a big wild cat. What am I?", 
                 choices: ["Lion", "Tiger", "Leopard", "Cheetah"], 
                 answer: "Tiger", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/tiger_roar.ogg",
                 thai: "ฉันมีลายส้มและดำ เป็นเสือป่าขนาดใหญ่ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "stripes", read: "สไตรป์ส", meaning: "ลายทาง" },
@@ -443,6 +523,7 @@
                 clue: "I am brown, I love honey, and I sleep all winter. What am I?", 
                 choices: ["Wolf", "Bear", "Fox", "Lion"], 
                 answer: "Bear", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/bear_groan.ogg",
                 thai: "ฉันตัวสีน้ำตาล ชอบกินน้ำผึ้ง และนอนหลับตลอดฤดูหนาว ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "honey", read: "ฮันนี", meaning: "น้ำผึ้ง" },
@@ -453,6 +534,7 @@
                 clue: "I am a pink bird with long legs that loves to stand in water. What am I?", 
                 choices: ["Flamingo", "Duck", "Swan", "Ostrich"], 
                 answer: "Flamingo", 
+                animalSound: "", 
                 thai: "ฉันคือนกสีชมพูขายาวที่ชอบยืนในน้ำ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "long legs", read: "ลอง เล็กส์", meaning: "ขายาว" },
@@ -463,6 +545,7 @@
                 clue: "I am a small insect that makes honey and buzzes around flowers. What am I?", 
                 choices: ["Ant", "Bee", "Wasp", "Fly"], 
                 answer: "Bee", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/bee_buzz.ogg",
                 thai: "ฉันคือแมลงตัวเล็กที่ทำน้ำผึ้งและบินหึ่งๆ รอบดอกไม้ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "insect", read: "อินเซ็คท์", meaning: "แมลง" },
@@ -473,6 +556,7 @@
                 clue: "I am green and I have a hard shell. I snap with my big mouth and live in rivers. What am I?", 
                 choices: ["Alligator", "Crocodile", "Turtle", "Frog"], 
                 answer: "Crocodile", 
+                animalSound: "", 
                 thai: "ฉันสีเขียวและมีเกราะแข็ง งับด้วยปากใหญ่และอยู่ริมแม่น้ำ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "mouth", read: "เมาท์ธ", meaning: "ปาก" },
@@ -483,6 +567,7 @@
                 clue: "I am a jumping animal from Australia and carry my baby in a pouch. What am I?", 
                 choices: ["Kangaroo", "Koala", "Rabbit", "Deer"], 
                 answer: "Kangaroo", 
+                animalSound: "", 
                 thai: "ฉันคือสัตว์กระโดดจากออสเตรเลียและอุ้มลูกไว้ในกระเป๋าหน้าท้อง ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "baby", read: "เบบี้", meaning: "ลูกสัตว์" },
@@ -493,6 +578,7 @@
                 clue: "I am small and gray. I love to eat cheese and run away from cats. What am I?", 
                 choices: ["Mouse", "Hamster", "Rabbit", "Squirrel"], 
                 answer: "Mouse", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/mouse_squeak.ogg",
                 thai: "ฉันตัวเล็กสีเทา ชอบกินชีสและวิ่งหนีแมว ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "cheese", read: "ชีส", meaning: "เนยแข็ง" },
@@ -503,6 +589,7 @@
                 clue: "I have a long tail and love to climb trees and eat bananas. What am I?", 
                 choices: ["Monkey", "Cat", "Squirrel", "Sloth"], 
                 answer: "Monkey", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/monkey_chatter.ogg",
                 thai: "ฉันมีหางยาวและชอบปีนต้นไม้กินกล้วย ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "tail", read: "เทล", meaning: "หาง" },
@@ -513,6 +600,7 @@
                 clue: "I am a bird that cannot fly, but I can run super fast across the desert. What am I?", 
                 choices: ["Penguin", "Ostrich", "Duck", "Chicken"], 
                 answer: "Ostrich", 
+                animalSound: "", 
                 thai: "ฉันคือนกที่บินไม่ได้ แต่ฉันวิ่งเร็วมากข้ามทะเลทราย ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "desert", read: "เดเซิร์ท", meaning: "ทะเลทราย" },
@@ -523,6 +611,7 @@
                 clue: "I have black and yellow stripes and I sting when I'm mad (not a bee). What am I?", 
                 choices: ["Wasp", "Fly", "Ant", "Mosquito"], 
                 answer: "Wasp", 
+                animalSound: "", 
                 thai: "ฉันมีลายเหลืองดำและต่อยเวลาโกรธ (ไม่ใช่ผึ้ง) ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "sting", read: "สตริง", meaning: "ต่อย" },
@@ -533,6 +622,7 @@
                 clue: "I live in the ocean and have sharp teeth. People call me a scary swimmer. What am I?", 
                 choices: ["Whale", "Shark", "Dolphin", "Seal"], 
                 answer: "Shark", 
+                animalSound: "", 
                 thai: "ฉันอยู่ในมหาสมุทรและมีฟันแหลมคม คนเรียกว่านักว่ายน้ำน่ากลัว ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "sharp teeth", read: "ชาร์ป ทีธ", meaning: "ฟันแหลมคม" },
@@ -543,6 +633,7 @@
                 clue: "I have long ears and a soft coat. I am smaller than a horse and carry heavy things. What am I?", 
                 choices: ["Donkey", "Horse", "Goat", "Sheep"], 
                 answer: "Donkey", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/donkey_bray.ogg",
                 thai: "ฉันมีหูยาวและขนหนานุ่ม ตัวเล็กกว่าม้าและแบกของหนัก ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "soft", read: "ซอฟต์", meaning: "นุ่ม" },
@@ -553,6 +644,7 @@
                 clue: "I am green, scaly, and I can change my skin color to hide. What am I?", 
                 choices: ["Snake", "Chameleon", "Frog", "Lizard"], 
                 answer: "Chameleon", 
+                animalSound: "", 
                 thai: "ฉันสีเขียว มีเกล็ด และเปลี่ยนสีผิวเพื่อพรางตัวได้ ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "skin color", read: "สกิน คัลเลอร์", meaning: "สีผิว" },
@@ -563,6 +655,7 @@
                 clue: "I am a big farm animal with hooves. People love to ride me. What am I?", 
                 choices: ["Cow", "Horse", "Donkey", "Pig"], 
                 answer: "Horse", 
+                animalSound: "https://actions.google.com/sounds/v1/animals/horse_whinny.ogg",
                 thai: "ฉันคือสัตว์ฟาร์มตัวใหญ่มีกีบเท้า คนชอบขี่ฉัน ฉันคือตัวอะไร?", 
                 vocab: [
                     { word: "farm animal", read: "ฟาร์ม แอนิมอล", meaning: "สัตว์ในฟาร์ม" },
@@ -583,11 +676,26 @@
         const vocabListContainer = document.getElementById("vocab-list-container");
         const nextBtn = document.getElementById("next-btn");
         const gameCard = document.getElementById("game-card");
+        const scorePopup = document.getElementById("score-popup");
+        const popupTitle = document.getElementById("popup-title");
+        const popupMsg = document.getElementById("popup-msg");
 
-        // ระบบเสียง Web Audio API
+        // ฟังก์ชันเล่นเสียงสัตว์จริง หรือเสียงดนตรีสำรอง
+        function playAnimalSound(soundUrl) {
+            if (soundUrl && soundUrl !== "") {
+                let audio = new Audio(soundUrl);
+                audio.play().catch(e => {
+                    playFallbackSound('correct'); // ถ้าเน็ตช้าหรือโหลดไม่ได้ เล่นเสียงดนตรีสำรอง
+                });
+            } else {
+                playFallbackSound('correct');
+            }
+        }
+
+        // ระบบเสียงสำรอง Web Audio API
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
-        function playSound(type) {
+        function playFallbackSound(type) {
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
@@ -625,7 +733,6 @@
                     translationText.textContent = q.thai;
                     translationText.style.display = "none";
                     
-                    // สร้างรายการคำศัพท์น่ารู้ พร้อมคำอ่าน คำแปล และปุ่มฟังเสียง
                     vocabListContainer.innerHTML = "";
                     q.vocab.forEach(item => {
                         let itemDiv = document.createElement("div");
@@ -650,7 +757,7 @@
                         let btn = document.createElement("button");
                         btn.textContent = choice;
                         btn.className = "choice-btn";
-                        btn.onclick = () => checkAnswer(choice, q.answer, btn);
+                        btn.onclick = () => checkAnswer(choice, q.answer, q.animalSound, btn);
                         choicesBox.appendChild(btn);
                     });
                     gameCard.style.opacity = "1";
@@ -668,7 +775,7 @@
             }
         }
 
-        function checkAnswer(selected, correct, selectedBtn) {
+        function checkAnswer(selected, correct, animalSoundUrl, selectedBtn) {
             let buttons = choicesBox.getElementsByTagName("button");
             for (let b of buttons) {
                 b.disabled = true;
@@ -682,15 +789,27 @@
                 scoreDisplay.textContent = score;
                 feedback.textContent = "✅ Correct! Great job!";
                 feedback.style.color = "#2ed573";
-                playSound('correct');
+                
+                // เล่นเสียงสัตว์ตัวนั้นๆ
+                playAnimalSound(animalSoundUrl);
+
+                // แสดง Popup คะแนน
+                popupTitle.textContent = "🎉 Awesome!";
+                popupMsg.textContent = `You got 1 point! Total: ${score} Score`;
+                scorePopup.classList.add("show");
+
             } else {
                 selectedBtn.classList.add("wrong");
                 feedback.textContent = `❌ Oops! The correct answer was "${correct}".`;
                 feedback.style.color = "#ff4757";
-                playSound('wrong');
+                playFallbackSound('wrong');
             }
 
             nextBtn.style.display = "block";
+        }
+
+        function closePopup() {
+            scorePopup.classList.remove("show");
         }
 
         function nextQuestion() {
@@ -706,18 +825,15 @@
                 utterance.lang = 'en-US';
                 utterance.rate = 0.9;
                 window.speechSynthesis.speak(utterance);
-            } else {
-                alert("Sorry, your browser doesn't support text to speech!");
             }
         }
 
-        // ฟังก์ชันสำหรับอ่านออกเสียงคำศัพท์แต่ละคำ
         function speakWord(word) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 let utterance = new SpeechSynthesisUtterance(word);
                 utterance.lang = 'en-US';
-                utterance.rate = 0.85; // พูดช้าลงเล็กน้อยเพื่อให้เด็กฝึกตามได้ง่าย
+                utterance.rate = 0.85;
                 window.speechSynthesis.speak(utterance);
             }
         }
