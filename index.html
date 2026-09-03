@@ -91,7 +91,40 @@
             box-shadow: 0 2px 0 #1ca74c;
         }
 
-        /* ส่วนของเกม (ซ่อนไว้ก่อนจนกว่าจะกดเริ่ม) */
+        /* สไตล์สำหรับหน้าจอวิดีโอคั่นกลาง */
+        #video-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0px;
+            padding-bottom: 56.250%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .skip-btn {
+            background-color: #ffa502;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #e67e22;
+            transition: 0.2s;
+        }
+        .skip-btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        /* ส่วนของเกม (ซ่อนไว้ก่อน) */
         #game-area {
             display: none;
         }
@@ -408,7 +441,16 @@
         <div class="welcome-screen" id="welcome-screen">
             <p style="font-size: 1.2rem; color: #2d3436; margin: 0; font-weight: bold;">พิมพ์ชื่อ-นามสกุล หรือชื่อเล่นของคุณ:</p>
             <input type="text" id="player-name-input" class="name-input" placeholder="เช่น ด.ช. รักเรียน สุขใจ" autocomplete="off">
-            <button class="start-btn" onclick="startGame()">🚀 เริ่มเล่นเกม (Start!)</button>
+            <button class="start-btn" onclick="startVideo()">🚀 เริ่มเล่นเกม (Start!)</button>
+        </div>
+
+        <!-- หน้าจอวิดีโอคั่นกลาง -->
+        <div id="video-screen">
+            <p style="font-size: 1.2rem; color: #d35400; margin: 0; font-weight: bold;">🎬 ชมวิดีโอก่อนเข้าสู่เกมกันก่อนนะจ๊ะ...</p>
+            <div class="video-wrapper">
+                <iframe id="game-video" allow="fullscreen;autoplay" allowfullscreen height="100%" src="" width="100%" style="border:none; width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden;"></iframe>
+            </div>
+            <button class="skip-btn" onclick="skipVideo()">⏭️ ข้ามวิดีโอ (Skip)</button>
         </div>
 
         <!-- พื้นที่เล่นเกม (ซ่อนไว้ก่อน) -->
@@ -787,11 +829,14 @@
         let currentIndex = 0;
         let score = 0;
         let playerName = "";
+        let videoTimer = null;
 
         const welcomeScreen = document.getElementById("welcome-screen");
+        const videoScreen = document.getElementById("video-screen");
         const gameArea = document.getElementById("game-area");
         const playerNameInput = document.getElementById("player-name-input");
         const displayName = document.getElementById("display-name");
+        const gameVideo = document.getElementById("game-video");
 
         const clueText = document.getElementById("clue-text");
         const choicesBox = document.getElementById("choices-box");
@@ -856,7 +901,7 @@
             }
         }
 
-        function startGame() {
+        function startVideo() {
             let nameVal = playerNameInput.value.trim();
             if (nameVal === "") {
                 alert("กรุณากรอกชื่อนักเรียนก่อนเริ่มเล่นเกมครับ! 😊");
@@ -866,8 +911,33 @@
             playerName = nameVal;
             displayName.textContent = playerName;
 
-            // สลับหน้าจอจากหน้าแรกไปหน้าเกม
+            // ซ่อนหน้าแรก แล้วแสดงหน้าจอวิดีโอ
             welcomeScreen.style.display = "none";
+            videoScreen.style.display = "flex";
+
+            // สั่งให้ iframe โหลดลิงก์วิดีโอพร้อมเล่นอัตโนมัติ
+            gameVideo.src = "https://streamable.com/e/vlks9f?autoplay=1&loop=0&nocontrols=1";
+
+            // ตั้งเวลาสำรอง (Fallback) สมมติว่าวิดีโอยาวประมาณ 30 วินาที เมื่อหมดเวลาจะเข้าเกมอัตโนมัติ 
+            // (หรือผู้เล่นสามารถกดปุ่ม "ข้ามวิดีโอ" ด้านล่างเพื่อเข้าเกมทันทีได้เช่นกัน)
+            if (videoTimer) clearTimeout(videoTimer);
+            videoTimer = setTimeout(() => {
+                startActualGame();
+            }, 30000); // 30 วินาที (ปรับเวลาเพิ่มลดได้ตามความยาวของวิดีโอ)
+        }
+
+        function skipVideo() {
+            if (videoTimer) clearTimeout(videoTimer);
+            startActualGame();
+        }
+
+        function startActualGame() {
+            if (videoTimer) clearTimeout(videoTimer);
+            // เคลียร์ src ของวิดีโอเพื่อหยุดเสียง/วิดีโอเบื้องหลัง
+            gameVideo.src = "";
+
+            // ซ่อนหน้าวิดีโอ แล้วแสดงพื้นที่เล่นเกม
+            videoScreen.style.display = "none";
             gameArea.style.display = "block";
 
             // รีเซ็ตค่าเริ่มต้น
@@ -882,8 +952,11 @@
         }
 
         function goToHome() {
-            // ซ่อนหน้าเกม กลับมาแสดงหน้าแรก
+            if (videoTimer) clearTimeout(videoTimer);
+            gameVideo.src = "";
+            // ซ่อนหน้าเกมและหน้าวิดีโอ กลับมาแสดงหน้าแรก
             gameArea.style.display = "none";
+            videoScreen.style.display = "none";
             welcomeScreen.style.display = "flex";
             playerNameInput.value = "";
             translationText.style.display = "none";
