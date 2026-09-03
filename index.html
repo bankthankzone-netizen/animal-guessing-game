@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif, Arial, sans-serif;
-            /* ตั้งค่าภาพจากลิงก์เป็นฉากหลัง เต็มจอ และไม่ให้ภาพซ้ำ พร้อมสีพื้นหลังสำรอง */
             background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), 
                         url('https://i.postimg.cc/50RbjKC2/safari-wild-animals-wall-mural-wallpapers-(4)-4112-p.jpg') no-repeat center center fixed;
             background-size: cover;
@@ -23,7 +22,7 @@
         .container {
             max-width: 700px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.93); /* ปรับให้ขาวนวลกึ่งโปร่งแสงนิดๆ เพื่อให้กลมกลืนกับฉากหลัง */
+            background: rgba(255, 255, 255, 0.93);
             padding: 30px;
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.25);
@@ -42,13 +41,82 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
-        .score-board {
+        
+        /* สไตล์สำหรับหน้าแรก (Welcome Screen) */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .name-input {
+            width: 80%;
+            max-width: 400px;
+            padding: 15px 20px;
             font-size: 1.3rem;
+            border: 3px solid #74b9ff;
+            border-radius: 20px;
+            text-align: center;
+            outline: none;
+            font-family: inherit;
+            color: #2d3436;
+            background: #f1f2f6;
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+        .name-input:focus {
+            border-color: #0984e3;
+            background: white;
+        }
+        .start-btn {
+            background-color: #2ed573;
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            font-size: 1.4rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 6px 0 #20bf55;
+            transition: 0.2s;
+        }
+        .start-btn:hover {
+            background-color: #20bf55;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #1ca74c;
+        }
+        .start-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #1ca74c;
+        }
+
+        /* ส่วนของเกม (ซ่อนไว้ก่อนจนกว่าจะกดเริ่ม) */
+        #game-area {
+            display: none;
+        }
+
+        .player-info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff3cd;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #856404;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+        }
+
+        .score-board {
+            font-size: 1.2rem;
             color: #0984e3;
             margin-bottom: 20px;
             font-weight: bold;
             background: #e8f4fd;
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 25px;
             display: inline-block;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -232,6 +300,30 @@
             transform: translateY(2px);
             box-shadow: 0 2px 0 #d35400;
         }
+        .home-btn {
+            display: none;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.3rem;
+            background-color: #ff6b81;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 0 #ff4757;
+            transition: 0.2s;
+            margin-top: 15px;
+        }
+        .home-btn:hover {
+            background-color: #ff4757;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 #e84118;
+        }
+        .home-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #e84118;
+        }
         #feedback {
             font-size: 1.4rem;
             font-weight: bold;
@@ -312,35 +404,50 @@
         <h1>🦁 Animal Guessing Game 🐶</h1>
         <div class="subtitle">Fun English Game for Grade 3-4 Kids</div>
         
-        <div class="score-board">
-            Question: <span id="current-q">1</span>/30 | Score: <span id="score">0</span>
+        <!-- หน้าแรก: กรอกชื่อนักเรียน -->
+        <div class="welcome-screen" id="welcome-screen">
+            <p style="font-size: 1.2rem; color: #2d3436; margin: 0; font-weight: bold;">พิมพ์ชื่อ-นามสกุล หรือชื่อเล่นของคุณ:</p>
+            <input type="text" id="player-name-input" class="name-input" placeholder="เช่น ด.ช. รักเรียน สุขใจ" autocomplete="off">
+            <button class="start-btn" onclick="startGame()">🚀 เริ่มเล่นเกม (Start!)</button>
         </div>
 
-        <div class="question-wrapper">
-            <div class="question-box" id="clue-text">Loading clue...</div>
-            
-            <div class="action-bar">
-                <button class="icon-btn" onclick="speakClue()">🔊 Listen Clue</button>
-                <button class="icon-btn" onclick="toggleTranslation()">🌐 Translate Thai</button>
+        <!-- พื้นที่เล่นเกม (ซ่อนไว้ก่อน) -->
+        <div id="game-area">
+            <div class="player-info-bar">
+                <span>👤 ผู้เล่น: <span id="display-name">-</span></span>
+                <button onclick="goToHome()" style="background: #ff4757; color: white; border: none; padding: 5px 12px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.9rem;">🏠 เปลี่ยนชื่อ / หน้าแรก</button>
             </div>
 
-            <!-- กล่องแปลภาษาไทยทั้งคำถามและช้อยส์ -->
-            <div class="translation-box" id="translation-text">
-                <p id="trans-clue"><b>คำถาม:</b> -</p>
-                <p id="trans-choices"><b>ตัวเลือก:</b> -</p>
+            <div class="score-board">
+                Question: <span id="current-q">1</span>/30 | Score: <span id="score">0</span>
             </div>
+
+            <div class="question-wrapper">
+                <div class="question-box" id="clue-text">Loading clue...</div>
+                
+                <div class="action-bar">
+                    <button class="icon-btn" onclick="speakClue()">🔊 Listen Clue</button>
+                    <button class="icon-btn" onclick="toggleTranslation()">🌐 Translate Thai</button>
+                </div>
+
+                <div class="translation-box" id="translation-text">
+                    <p id="trans-clue"><b>คำถาม:</b> -</p>
+                    <p id="trans-choices"><b>ตัวเลือก:</b> -</p>
+                </div>
+            </div>
+
+            <div class="vocab-box" id="vocab-box">
+                <div class="vocab-title">📚 Vocabulary (คำศัพท์น่ารู้)</div>
+                <div id="vocab-list-container"></div>
+            </div>
+
+            <div class="choices-container" id="choices-box"></div>
+
+            <div id="feedback"></div>
+
+            <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question ➡️</button>
+            <button class="home-btn" id="home-btn" onclick="goToHome()">🏠 กลับมาหน้าแรก (Home)</button>
         </div>
-
-        <div class="vocab-box" id="vocab-box">
-            <div class="vocab-title">📚 Vocabulary (คำศัพท์น่ารู้)</div>
-            <div id="vocab-list-container"></div>
-        </div>
-
-        <div class="choices-container" id="choices-box"></div>
-
-        <div id="feedback"></div>
-
-        <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question ➡️</button>
     </div>
 
     <script>
@@ -679,6 +786,12 @@
 
         let currentIndex = 0;
         let score = 0;
+        let playerName = "";
+
+        const welcomeScreen = document.getElementById("welcome-screen");
+        const gameArea = document.getElementById("game-area");
+        const playerNameInput = document.getElementById("player-name-input");
+        const displayName = document.getElementById("display-name");
 
         const clueText = document.getElementById("clue-text");
         const choicesBox = document.getElementById("choices-box");
@@ -690,12 +803,12 @@
         const transChoices = document.getElementById("trans-choices");
         const vocabListContainer = document.getElementById("vocab-list-container");
         const nextBtn = document.getElementById("next-btn");
+        const homeBtn = document.getElementById("home-btn");
         const gameCard = document.getElementById("game-card");
         const scorePopup = document.getElementById("score-popup");
         const popupTitle = document.getElementById("popup-title");
         const popupMsg = document.getElementById("popup-msg");
 
-        // ระบบเสียง Web Audio API สำหรับสร้างเสียง "ปิ้งป่อง" และเสียงผิด
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playSound(type) {
@@ -706,7 +819,6 @@
             if (type === 'correct') {
                 const now = audioCtx.currentTime;
                 
-                // โน้ตแรก (ปิ้ง - C6)
                 const osc1 = audioCtx.createOscillator();
                 const gain1 = audioCtx.createGain();
                 osc1.type = 'sine';
@@ -718,7 +830,6 @@
                 osc1.start(now);
                 osc1.stop(now + 0.25);
 
-                // โน้ตสอง (ป่อง - G6)
                 const osc2 = audioCtx.createOscillator();
                 const gain2 = audioCtx.createGain();
                 osc2.type = 'sine';
@@ -743,6 +854,40 @@
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.3);
             }
+        }
+
+        function startGame() {
+            let nameVal = playerNameInput.value.trim();
+            if (nameVal === "") {
+                alert("กรุณากรอกชื่อนักเรียนก่อนเริ่มเล่นเกมครับ! 😊");
+                playerNameInput.focus();
+                return;
+            }
+            playerName = nameVal;
+            displayName.textContent = playerName;
+
+            // สลับหน้าจอจากหน้าแรกไปหน้าเกม
+            welcomeScreen.style.display = "none";
+            gameArea.style.display = "block";
+
+            // รีเซ็ตค่าเริ่มต้น
+            currentIndex = 0;
+            score = 0;
+            scoreDisplay.textContent = score;
+            choicesBox.style.display = "grid";
+            document.getElementById("vocab-box").style.display = "block";
+            document.querySelector('.action-bar').style.display = "flex";
+            
+            loadQuestion();
+        }
+
+        function goToHome() {
+            // ซ่อนหน้าเกม กลับมาแสดงหน้าแรก
+            gameArea.style.display = "none";
+            welcomeScreen.style.display = "flex";
+            playerNameInput.value = "";
+            translationText.style.display = "none";
+            scorePopup.classList.remove("show");
         }
 
         function loadQuestion() {
@@ -776,6 +921,7 @@
                     currentQDisplay.textContent = currentIndex + 1;
                     feedback.textContent = "";
                     nextBtn.style.display = "none";
+                    homeBtn.style.display = "none";
                     choicesBox.innerHTML = "";
 
                     q.choices.forEach(choice => {
@@ -789,14 +935,15 @@
                 }, 200);
 
             } else {
-                clueText.textContent = "🎉 Congratulations! You finished the game!";
+                clueText.textContent = `🎉 เยี่ยมมาก ${playerName}! คุณเล่นจบเกมแล้วครับ!`;
                 choicesBox.style.display = "none";
                 document.getElementById("vocab-box").style.display = "none";
                 document.querySelector('.action-bar').style.display = "none";
                 translationText.style.display = "none";
-                feedback.textContent = `Your final score is ${score} out of ${questions.length}!`;
-                feedback.style.color = "#ff6b6b";
+                feedback.textContent = `คะแนนรวมของคุณคือ ${score} จาก ${questions.length} คะแนน! 🌟`;
+                feedback.style.color = "#d35400";
                 nextBtn.style.display = "none";
+                homeBtn.style.display = "block"; // แสดงปุ่มกลับมาหน้าแรกเมื่อเล่นจบ
             }
         }
 
@@ -818,7 +965,7 @@
                 playSound('correct');
 
                 popupTitle.textContent = "🎉 ปิ้งป่อง! ถูกต้องครับ";
-                popupMsg.textContent = `คุณได้ 1 คะแนน! คะแนนสะสม: ${score}`;
+                popupMsg.textContent = `${playerName} ได้ 1 คะแนน! (สะสม: ${score})`;
                 scorePopup.classList.add("show");
 
             } else {
@@ -868,9 +1015,6 @@
                 translationText.style.display = "block";
             }
         }
-
-        // โหลดข้อแรกเริ่มต้น
-        loadQuestion();
     </script>
 </body>
 </html>
