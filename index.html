@@ -20,7 +20,7 @@
             align-items: center;
         }
 
-        /* หน้าจอวิดีโอเต็มจอทับทุกอย่าง */
+        /* หน้าจอวิดีโอเต็มจอทับทุกอย่างแบบไม่มีฉากหลัง */
         #fullscreen-video-overlay {
             display: none;
             position: fixed;
@@ -37,6 +37,28 @@
             width: 100vw;
             height: 100vh;
             border: none;
+        }
+
+        /* ปุ่มข้ามฉุกเฉิน มุมขวาบน */
+        .skip-video-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 10000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: 0.2s;
+        }
+        .skip-video-btn:hover {
+            background: #fff;
+            transform: scale(1.05);
         }
 
         .container {
@@ -62,7 +84,7 @@
             font-weight: bold;
         }
         
-        /* สไตล์สำหรับหน้าแรก (Welcome Screen) */
+        /* หน้าแรก (Welcome Screen) */
         .welcome-screen {
             display: flex;
             flex-direction: column;
@@ -111,7 +133,6 @@
             box-shadow: 0 2px 0 #1ca74c;
         }
 
-        /* ส่วนของเกม (ซ่อนไว้ก่อน) */
         #game-area {
             display: none;
         }
@@ -279,15 +300,6 @@
             transition: all 0.2s ease;
             box-shadow: 0 5px 0 #0984e3;
         }
-        .choice-btn:hover:not(:disabled) {
-            background-color: #0984e3;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 0 #074b83;
-        }
-        .choice-btn:active:not(:disabled) {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #074b83;
-        }
         .choice-btn.correct {
             background-color: #2ed573 !important;
             box-shadow: 0 5px 0 #20bf55 !important;
@@ -311,15 +323,6 @@
             transition: 0.2s;
             margin-top: 15px;
         }
-        .next-btn:hover {
-            background-color: #e67e22;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 0 #d35400;
-        }
-        .next-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #d35400;
-        }
         .home-btn {
             display: none;
             width: 100%;
@@ -335,15 +338,6 @@
             transition: 0.2s;
             margin-top: 15px;
         }
-        .home-btn:hover {
-            background-color: #ff4757;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 0 #e84118;
-        }
-        .home-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #e84118;
-        }
         #feedback {
             font-size: 1.4rem;
             font-weight: bold;
@@ -351,7 +345,7 @@
             margin-top: 10px;
         }
 
-        /* --- สไตล์สำหรับ Popup คะแนน --- */
+        /* Popup คะแนน */
         .popup-overlay {
             position: fixed;
             top: 0;
@@ -404,15 +398,13 @@
             font-weight: bold;
             box-shadow: 0 4px 0 #20bf55;
         }
-        .popup-btn:hover {
-            background-color: #20bf55;
-        }
     </style>
 </head>
 <body>
 
-    <!-- หน้าจอแสดงวิดีโอเต็มจอแบบไม่เห็นฉากหลัง -->
+    <!-- หน้าจอแสดงวิดีโอเต็มจอแบบไม่เห็นฉากหลัง พร้อมปุ่มข้ามฉุกเฉิน -->
     <div id="fullscreen-video-overlay">
+        <button class="skip-video-btn" onclick="startActualGame()">▶ เริ่มเล่นเกมทันที</button>
         <iframe id="game-video" allow="fullscreen;autoplay" allowfullscreen src=""></iframe>
     </div>
 
@@ -436,7 +428,7 @@
             <button class="start-btn" onclick="startVideo()">🚀 เริ่มเล่นเกม (Start!)</button>
         </div>
 
-        <!-- พื้นที่เล่นเกม (ซ่อนไว้ก่อน) -->
+        <!-- พื้นที่เล่นเกม -->
         <div id="game-area">
             <div class="player-info-bar">
                 <span>👤 ผู้เล่น: <span id="display-name">-</span></span>
@@ -813,6 +805,7 @@
         let score = 0;
         let playerName = "";
         let videoTimer = null;
+        let isGameStarted = false;
 
         const welcomeScreen = document.getElementById("welcome-screen");
         const fullscreenVideoOverlay = document.getElementById("fullscreen-video-overlay");
@@ -893,27 +886,29 @@
             }
             playerName = nameVal;
             displayName.textContent = playerName;
+            isGameStarted = false;
 
-            // ซ่อนหน้าหลัก และซ่อนการ์ดเกมทั้งหมด แล้วแสดง overlay วิดีโอเต็มจอแบบมืดทึบ
             welcomeScreen.style.display = "none";
             gameCard.style.display = "none";
             fullscreenVideoOverlay.style.display = "flex";
 
-            // สั่งเล่นวิดีโอแบบเต็มจอ
+            // สั่งเล่นวิดีโอ
             gameVideo.src = "https://streamable.com/e/vlks9f?autoplay=1&loop=0&nocontrols=1";
 
-            // เมื่อวิดีโอเล่นครบกำหนด (ตั้งไว้ 30 วินาทีตามความยาววิดีโอ) จะตัดเข้าเกมทันที
+            // ปรับเวลาตั้งตัดเข้าเกมตามความยาววิดีโอจริง 9.3 วินาที (ตั้งไว้ที่ 9500 มิลลิวินาทีพอดี)
             if (videoTimer) clearTimeout(videoTimer);
             videoTimer = setTimeout(() => {
                 startActualGame();
-            }, 30000); 
+            }, 9500); 
         }
 
         function startActualGame() {
+            if (isGameStarted) return;
+            isGameStarted = true;
+
             if (videoTimer) clearTimeout(videoTimer);
             gameVideo.src = "";
 
-            // ปิดหน้าจอวิดีโอเต็มจอ และแสดงการ์ดเกมและพื้นที่เล่นเกมจริง
             fullscreenVideoOverlay.style.display = "none";
             gameCard.style.display = "block";
             gameArea.style.display = "block";
