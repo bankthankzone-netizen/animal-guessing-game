@@ -19,6 +19,26 @@
             justify-content: center;
             align-items: center;
         }
+
+        /* หน้าจอวิดีโอเต็มจอทับทุกอย่าง */
+        #fullscreen-video-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        #fullscreen-video-overlay iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+
         .container {
             max-width: 700px;
             width: 100%;
@@ -89,48 +109,6 @@
         .start-btn:active {
             transform: translateY(2px);
             box-shadow: 0 2px 0 #1ca74c;
-        }
-
-        /* สไตล์สำหรับหน้าจอวิดีโอคั่นกลาง (ปรับให้วิดีโอขยายเต็มพื้นที่กล่อง) */
-        #video-screen {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            width: 100%;
-        }
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            height: 420px; /* กำหนดความสูงให้เต็มตาและกว้างขึ้น */
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            background: #000;
-        }
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .skip-btn {
-            background-color: #ffa502;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            font-size: 1.1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 0 #e67e22;
-            transition: 0.2s;
-        }
-        .skip-btn:hover {
-            background-color: #e67e22;
-            transform: translateY(-2px);
         }
 
         /* ส่วนของเกม (ซ่อนไว้ก่อน) */
@@ -433,6 +411,11 @@
 </head>
 <body>
 
+    <!-- หน้าจอแสดงวิดีโอเต็มจอแบบไม่เห็นฉากหลัง -->
+    <div id="fullscreen-video-overlay">
+        <iframe id="game-video" allow="fullscreen;autoplay" allowfullscreen src=""></iframe>
+    </div>
+
     <!-- Popup แจ้งคะแนนเมื่อตอบถูก -->
     <div class="popup-overlay" id="score-popup">
         <div class="popup-card">
@@ -451,15 +434,6 @@
             <p style="font-size: 1.2rem; color: #2d3436; margin: 0; font-weight: bold;">พิมพ์ชื่อ-นามสกุล หรือชื่อเล่นของคุณ:</p>
             <input type="text" id="player-name-input" class="name-input" placeholder="เช่น ด.ช. รักเรียน สุขใจ" autocomplete="off">
             <button class="start-btn" onclick="startVideo()">🚀 เริ่มเล่นเกม (Start!)</button>
-        </div>
-
-        <!-- หน้าจอวิดีโอคั่นกลาง (เต็มพื้นที่กล่อง) -->
-        <div id="video-screen">
-            <p style="font-size: 1.2rem; color: #d35400; margin: 0; font-weight: bold;">🎬 ชมวิดีโอก่อนเข้าสู่เกมกันก่อนนะจ๊ะ...</p>
-            <div class="video-wrapper">
-                <iframe id="game-video" allow="fullscreen;autoplay" allowfullscreen src=""></iframe>
-            </div>
-            <button class="skip-btn" onclick="skipVideo()">⏭️ ข้ามวิดีโอ (Skip)</button>
         </div>
 
         <!-- พื้นที่เล่นเกม (ซ่อนไว้ก่อน) -->
@@ -841,7 +815,7 @@
         let videoTimer = null;
 
         const welcomeScreen = document.getElementById("welcome-screen");
-        const videoScreen = document.getElementById("video-screen");
+        const fullscreenVideoOverlay = document.getElementById("fullscreen-video-overlay");
         const gameArea = document.getElementById("game-area");
         const playerNameInput = document.getElementById("player-name-input");
         const displayName = document.getElementById("display-name");
@@ -920,30 +894,28 @@
             playerName = nameVal;
             displayName.textContent = playerName;
 
-            // ซ่อนหน้าแรก แล้วแสดงหน้าจอวิดีโอ
+            // ซ่อนหน้าหลัก และซ่อนการ์ดเกมทั้งหมด แล้วแสดง overlay วิดีโอเต็มจอแบบมืดทึบ
             welcomeScreen.style.display = "none";
-            videoScreen.style.display = "flex";
+            gameCard.style.display = "none";
+            fullscreenVideoOverlay.style.display = "flex";
 
-            // โหลดลิงก์วิดีโอ (Streamable)
+            // สั่งเล่นวิดีโอแบบเต็มจอ
             gameVideo.src = "https://streamable.com/e/vlks9f?autoplay=1&loop=0&nocontrols=1";
 
-            // ตั้งเวลาสำรอง (30 วินาที) หรือกดข้ามได้
+            // เมื่อวิดีโอเล่นครบกำหนด (ตั้งไว้ 30 วินาทีตามความยาววิดีโอ) จะตัดเข้าเกมทันที
             if (videoTimer) clearTimeout(videoTimer);
             videoTimer = setTimeout(() => {
                 startActualGame();
             }, 30000); 
         }
 
-        function skipVideo() {
-            if (videoTimer) clearTimeout(videoTimer);
-            startActualGame();
-        }
-
         function startActualGame() {
             if (videoTimer) clearTimeout(videoTimer);
             gameVideo.src = "";
 
-            videoScreen.style.display = "none";
+            // ปิดหน้าจอวิดีโอเต็มจอ และแสดงการ์ดเกมและพื้นที่เล่นเกมจริง
+            fullscreenVideoOverlay.style.display = "none";
+            gameCard.style.display = "block";
             gameArea.style.display = "block";
 
             currentIndex = 0;
@@ -959,8 +931,9 @@
         function goToHome() {
             if (videoTimer) clearTimeout(videoTimer);
             gameVideo.src = "";
+            fullscreenVideoOverlay.style.display = "none";
             gameArea.style.display = "none";
-            videoScreen.style.display = "none";
+            gameCard.style.display = "block";
             welcomeScreen.style.display = "flex";
             playerNameInput.value = "";
             translationText.style.display = "none";
