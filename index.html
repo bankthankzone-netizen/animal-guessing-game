@@ -454,7 +454,7 @@
             </div>
 
             <div class="vocab-box" id="vocab-box">
-                <div class="vocab-title">📚 Vocabulary (คำศัพท์น่ารู้)</div>
+                <div class="vocab-title">📚 Vocabulary (ศัพท์น่ารู้คำแปลกน่าสนใจ)</div>
                 <div id="vocab-list-container"></div>
             </div>
 
@@ -470,333 +470,333 @@
     <script>
         const questions = [
             { 
-                clue: "I am a massive gray animal known for my incredible strength and weight. What am I?", 
+                clue: "I am a very big gray animal. I love to live near water and I am very heavy. What am I?", 
                 choices: ["Elephant", "Lion", "Giraffe", "Zebra"], 
                 choiceThai: { "Elephant": "ช้าง", "Lion": "สิงโต", "Giraffe": "ยีราฟ", "Zebra": "ม้าลาย" },
                 answer: "Elephant", 
-                thai: "ฉันคือสัตว์สีเทาขนาดมหึมาที่ขึ้นชื่อเรื่องพละกำลังและน้ำหนักตัวที่มาก ฉันคือตัวอะไร?", 
+                thai: "ฉันคือสัตว์ตัวใหญ่สีเทา ชอบอยู่ใกล้ๆ น้ำและมีน้ำหนักตัวเยอะมาก ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "massive", read: "แมสซีฟ", meaning: "ใหญ่โตมโหฬาร" },
-                    { word: "strength", read: "สเตร็งทธ์", meaning: "พละกำลัง" }
+                    { word: "colossal", read: "โค-ลอส-ซัล", meaning: "ใหญ่โตมโหฬารมากๆ" },
+                    { word: "titan", read: "ไท-ทัน", meaning: "สิ่งที่มีขนาดใหญ่ยักษ์" }
                 ] 
             },
             { 
-                clue: "I am a powerful predator ruling open grasslands with a commanding loud sound. What am I?", 
+                clue: "I am a big cat that lives in the jungle. I make a very loud sound when I am mad. What am I?", 
                 choices: ["Tiger", "Lion", "Bear", "Monkey"], 
                 choiceThai: { "Tiger": "เสือ", "Lion": "สิงโต", "Bear": "หมี", "Monkey": "ลิง" },
                 answer: "Lion", 
-                thai: "ฉันคือนักล่าผู้ทรงพลังที่ครองทุ่งหญ้ากว้างใหญ่ด้วยเสียงร้องคำรามก้อง ฉันคือตัวอะไร?", 
+                thai: "ฉันคือแมวตัวใหญ่ที่อยู่ในป่า ร้องเสียงดังมากๆ เวลาโมโห ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "predator", read: "พรีเดเตอร์", meaning: "สัตว์นักล่า" },
-                    { word: "commanding", read: "คอมแมนดิง", meaning: "ทรงอำนาจ / น่าเกรงขาม" }
+                    { word: "monarch", read: "มอน-อาร์ค", meaning: "ราชา / ผู้ปกครองสูงสุด" },
+                    { word: "ferocious", read: "เฟ-โร-เชียส", meaning: "ดุร้ายน่ากลัว" }
                 ] 
             },
             { 
-                clue: "I am the tallest land animal, reaching high branches that others cannot touch. What am I?", 
+                clue: "I am a very tall animal. I have a long neck to eat leaves from high trees. What am I?", 
                 choices: ["Horse", "Elephant", "Giraffe", "Cow"], 
                 choiceThai: { "Horse": "ม้า", "Elephant": "ช้าง", "Giraffe": "ยีราฟ", "Cow": "วัว" },
                 answer: "Giraffe", 
-                thai: "ฉันคือสัตว์บกที่สูงที่สุด เอื้อมถึงกิ่งไม้สูงๆ ที่ตัวอื่นเอื้อมไม่ถึง ฉันคือตัวอะไร?", 
+                thai: "ฉันคือสัตว์ตัวสูงมากๆ มีคอยาวไว้กินใบไม้จากต้นไม้สูงๆ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "tallest", read: "ทอลเลสท์", meaning: "สูงที่สุด" },
-                    { word: "branches", read: "บรานช์ซิส", meaning: "กิ่งไม้" }
+                    { word: "lofty", read: "ลอฟ-ที", meaning: "สูงตระหง่าน" },
+                    { word: "foliage", read: "โฟ-ลิ-อิจ", meaning: "พุ่มใบไม้รวมกัน" }
                 ] 
             },
             { 
-                clue: "I roam the wild with a unique black and white patterned coat. What am I?", 
+                clue: "I look like a horse, but I have black and white lines all over my body. What am I?", 
                 choices: ["Zebra", "Cow", "Panda", "Tiger"], 
                 choiceThai: { "Zebra": "ม้าลาย", "Cow": "วัว", "Panda": "แพนด้า", "Tiger": "เสือ" },
                 answer: "Zebra", 
-                thai: "ฉันใช้ชีวิตในป่าพร้อมลวดลายขาวดำที่เป็นเอกลักษณ์ไม่เหมือนใคร ฉันคือตัวอะไร?", 
+                thai: "ฉันดูคล้ายม้า แต่มีเส้นสีดำและสีขาวอยู่ทั่วตัวเลย ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "patterned", read: "แพทเทิร์นด", meaning: "มีลวดลาย" },
-                    { word: "unique", read: "ยูนี้ค", meaning: "เป็นเอกลักษณ์" }
+                    { word: "monochrome", read: "มอน-โอ-โครม", meaning: "มีเพียงสีดำและขาว" },
+                    { word: "enigma", read: "เอ-นิก-มา", meaning: "ปริศนา / ความลับ" }
                 ] 
             },
             { 
-                clue: "I start my life as a swimmer in ponds, then grow up to leap on land. What am I?", 
+                clue: "I am green. I live in water or grass, and I can jump very high. What am I?", 
                 choices: ["Fish", "Frog", "Turtle", "Duck"], 
                 choiceThai: { "Fish": "ปลา", "Frog": "กบ", "Turtle": "เต่า", "Duck": "เป็ด" },
                 answer: "Frog", 
-                thai: "ฉันเริ่มต้นชีวิตในสระน้ำด้วยการว่ายน้ำ ก่อนจะโตมาเป็นสัตว์ที่กระโดดได้บนบก ฉันคือตัวอะไร?", 
+                thai: "ฉันตัวสีเขียว อยู่ในน้ำหรือบนหญ้า และกระโดดได้สูงมากๆ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "start", read: "สตาร์ท", meaning: "เริ่มต้น" },
-                    { word: "leap", read: "ลีพ", meaning: "กระโดด" }
+                    { word: "amphibian", read: "แอม-ฟิบ-เบียน", meaning: "สัตว์ครึ่งบกครึ่งน้ำ" },
+                    { word: "bound", read: "เบาท์", meaning: "กระโดดโผนทะยาน" }
                 ] 
             },
             { 
-                clue: "I am a loyal household companion that protects homes and catches balls. What am I?", 
+                clue: "I am a friendly pet. I love to play with kids, run in the park, and bark. What am I?", 
                 choices: ["Cat", "Dog", "Rabbit", "Fox"], 
                 choiceThai: { "Cat": "แมว", "Dog": "สุนัข", "Rabbit": "กระต่าย", "Fox": "สุนัขจิ้งจอก" },
                 answer: "Dog", 
-                thai: "ฉันคือเพื่อนคู่ใจในบ้านที่คอยเฝ้าบ้านและชอบวิ่งเก็บลูกบอล ฉันคือตัวอะไร?", 
+                thai: "ฉันคือสัตว์เลี้ยงใจดี ชอบเล่นกับเด็กๆ วิ่งเล่นในสวนและเห่าได้ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "loyal", read: "โลยัล", meaning: "ซื่อสัตย์" },
-                    { word: "companion", read: "คอมพาเนียน", meaning: "เพื่อนร่วมทาง" }
+                    { word: "vigilant", read: "วิจ-จิ-แลนต์", meaning: "ตื่นตัว / ระแวดระวังภัย" },
+                    { word: "fidelity", read: "ฟิ-เดล-ลิ-ที", meaning: "ความซื่อสัตย์ภักดี" }
                 ] 
             },
             { 
-                clue: "I am a nimble house pet known for being quiet and hunting small pests. What am I?", 
+                clue: "I am a small pet that likes to sleep, drink milk, and catch mice at night. What am I?", 
                 choices: ["Dog", "Cat", "Mouse", "Hamster"], 
                 choiceThai: { "Dog": "สุนัข", "Cat": "แมว", "Mouse": "หนู", "Hamster": "แฮมสเตอร์" },
                 answer: "Cat", 
-                thai: "ฉันคือสัตว์เลี้ยงตัวนิ่มที่ขึ้นชื่อเรื่องความเงียบเชียบและชอบล่าสัตว์ตัวเล็กๆ ฉันคือตัวอะไร?", 
+                thai: "ฉันคือสัตว์เลี้ยงตัวเล็ก ชอบนอน ดื่มนม และจับหนูตอนกลางคืน ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "nimble", read: "นิมเบิล", meaning: "ว่องไว" },
-                    { word: "pests", read: "เพสต์ส", meaning: "สัตว์รบกวน / สัตว์ตัวเล็ก" }
+                    { word: "nocturnal", read: "น็อก-เทอร์-นัล", meaning: "ออกหากินตอนกลางคืน" },
+                    { word: "feline", read: "ฟี-ไลน์", meaning: "สัตว์ตระกูลแมว" }
                 ] 
             },
             { 
-                clue: "I am a swift jumper with soft fur who adores crunchy root vegetables. What am I?", 
+                clue: "I have long ears, soft fur, and I love to jump around and eat carrots. What am I?", 
                 choices: ["Rabbit", "Monkey", "Pig", "Sheep"], 
                 choiceThai: { "Rabbit": "กระต่าย", "Monkey": "ลิง", "Pig": "หมู", "Sheep": "แกะ" },
                 answer: "Rabbit", 
-                thai: "ฉันคือนักกระโดดว่องไวที่มีขนฟูนุ่มและชื่นชอบพืชหัวกรุบกรอบ ฉันคือตัวอะไร?", 
+                thai: "ฉันมีหูยาว ขนมนุ่มนิ่ม และชอบกระโดดไปมากินแครอท ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "swift", read: "สวิฟท์", meaning: "รวดเร็ว" },
-                    { word: "crunchy", read: "ครันชี", meaning: "กรุบกรอบ" }
+                    { word: "lagomorph", read: "แลก-โก-มอร์ฟ", meaning: "สัตว์ฟันแทะจำพวกกระต่าย" },
+                    { word: "timid", read: "ทิม-มิด", meaning: "ขี้อาย / ขี้ตกใจ" }
                 ] 
             },
             { 
-                clue: "I provide healthy drinks for humans and spend my day grazing on pasture grass. What am I?", 
+                clue: "I live on a farm. I give people white milk to drink and say 'moo'. What am I?", 
                 choices: ["Goat", "Horse", "Cow", "Sheep"], 
                 choiceThai: { "Goat": "แพะ", "Horse": "ม้า", "Cow": "วัว", "Sheep": "แกะ" },
                 answer: "Cow", 
-                thai: "ฉันคือนักผลิตเครื่องดื่มมีประโยชน์ให้มนุษย์ และใช้เวลาทั้งวันเดินเล็มหญ้าในทุ่ง ฉันคือตัวอะไร?", 
+                thai: "ฉันอยู่ในฟาร์ม ให้รสนมสีขาวอร่อยแก่คนดื่ม และร้องมอๆ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "grazing", read: "เกรซิง", meaning: "เล็มหญ้า" },
-                    { word: "pasture", read: "พาสเชอร์", meaning: "ทุ่งหญ้าเลี้ยงสัตว์" }
+                    { word: "bovine", read: "โบ-ไวน์", meaning: "สัตว์จำพวกโคและวัว" },
+                    { word: "bountiful", read: "บาวน์-ทิ-ฟูล", meaning: "มีให้อย่างอุดมสมบูรณ์" }
                 ] 
             },
             { 
-                clue: "I am a pure aquatic creature breathing underwater through specialized organs. What am I?", 
+                clue: "I live in the blue ocean. I have fins and I swim fast all day long. What am I?", 
                 choices: ["Fish", "Alligator", "Turtle", "Duck"], 
                 choiceThai: { "Fish": "ปลา", "Alligator": "อัลลิเกเตอร์", "Turtle": "เต่า", "Duck": "เป็ด" },
                 answer: "Fish", 
-                thai: "ฉันคือสิ่งมีชีวิตในน้ำแท้จริง หายใจใต้น้ำผ่านอวัยวะพิเศษเฉพาะตัว ฉันคือตัวอะไร?", 
+                thai: "ฉันอาศัยอยู่ในมหาสมุทรสีฟ้า มีครีบและว่ายน้ำเร็วตลอดทั้งวันเลย ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "aquatic", read: "อะควอทิก", meaning: "ในน้ำ" },
-                    { word: "organs", read: "ออร์แกนส์", meaning: "อวัยวะ" }
+                    { word: "finscale", read: "ฟิน-สเกล", meaning: "เกล็ดและครีบปลา" },
+                    { word: "current", read: "เคอร์-เรนต์", meaning: "กระแสน้ำวน" }
                 ] 
             },
             { 
-                clue: "I possess light aerodynamic body parts that let me soar across the open sky. What am I?", 
+                clue: "I have wings and can fly high up in the blue sky. I like to sing in trees. What am I?", 
                 choices: ["Bird", "Bat", "Bee", "Frog"], 
                 choiceThai: { "Bird": "นก", "Bat": "ค้างคาว", "Bee": "ผึ้ง", "Frog": "กบ" },
                 answer: "Bird", 
-                thai: "ฉันมีโครงสร้างร่างกายเบาที่ช่วยให้ฉันล่องลอยไปทั่วท้องฟ้ากว้างใหญ่ ฉันคือตัวอะไร?", 
+                thai: "ฉันมีปีกและบินขึ้นไปบนฟ้าสีฟ้าสูงๆ ได้ ชอบร้องเพลงบนต้นไม้ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "aerodynamic", read: "แอร์โรไดนามิก", meaning: "พลศาสตร์อากาศ / เหมาะกับการบิน" },
-                    { word: "soar", read: "ซอร์", meaning: "บินทะยานขึ้นสูง" }
+                    { word: "avian", read: "เอ-เวียน", meaning: "เกี่ยวกับนก" },
+                    { word: "chirp", read: "เชิร์ป", meaning: "เสียงนกร้องจิ๊บๆ" }
                 ] 
             },
             { 
-                clue: "I move at a very leisurely pace while carrying my portable protective shield. What am I?", 
+                clue: "I walk very, very slowly and I carry a hard house on my back. What am I?", 
                 choices: ["Snail", "Turtle", "Crab", "Frog"], 
                 choiceThai: { "Snail": "หอยทาก", "Turtle": "เต่า", "Crab": "ปู", "Frog": "กบ" },
                 answer: "Turtle", 
-                thai: "ฉันเคลื่อนไหวด้วยจังหวะที่เนิบช้ามาก พร้อมกับแบกเกราะป้องกันติดตัวไปตลอดเวลา ฉันคือตัวอะไร?", 
+                thai: "ฉันเดินช้ามากๆๆ และแบกบ้านหลังแข็งๆ ไว้บนหลังตลอดเวลา ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "leisurely", read: "เลเชอร์ลี", meaning: "เนิบช้า / สบายๆ" },
-                    { word: "protective", read: "โปรเทคทีฟ", meaning: "ป้องกันภัย" }
+                    { word: "chelonian", read: "เช-โล-เนียน", meaning: "สัตว์มีกระดองจำพวกเต่า" },
+                    { word: "sluggish", read: "สลัก-กิช", meaning: "เชื่องช้าอืดอาด" }
                 ] 
             },
             { 
-                clue: "I am a stout farm dweller that loves cooling off in soft wet earth. What am I?", 
+                clue: "I am pink, fat, and happy. I love to play in the mud when it is hot. What am I?", 
                 choices: ["Pig", "Sheep", "Hippo", "Cow"], 
                 choiceThai: { "Pig": "หมู", "Sheep": "แกะ", "Hippo": "ฮิปโป", "Cow": "วัว" },
                 answer: "Pig", 
-                thai: "ฉันคือสัตว์ในฟาร์มรูปร่างท้วมที่ชอบคลายร้อนด้วยดินชื้นแฉะ ฉันคือตัวอะไร?", 
+                thai: "ฉันตัวสีชมพู อ้วนท้วม และมีความสุข ชอบลงไปเล่นในโคลนเวลาอากาศร้อน ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "stout", read: "สเตาต์", meaning: "อ้วนท้วม / ล่ำสัน" },
-                    { word: "cooling off", read: "คูลลิง ออฟ", meaning: "คลายร้อน" }
+                    { word: "swine", read: "สไวน์", meaning: "หมู / สัตว์ตระกูลสุกร" },
+                    { word: "wallow", read: "วอล-โลว์", meaning: "เกลือกกลิ้งในโคลน" }
                 ] 
             },
             { 
-                clue: "I am an exceptionally intelligent marine swimmer known for joyful acrobatics. What am I?", 
+                clue: "I am a smart sea animal. I love to jump out of the water and play with people. What am I?", 
                 choices: ["Shark", "Dolphin", "Fish", "Octopus"], 
                 choiceThai: { "Shark": "ฉลาม", "Dolphin": "โลมา", "Fish": "ปลา", "Octopus": "ปลาหมึก" },
                 answer: "Dolphin", 
-                thai: "ฉันคือนักว่ายน้ำแห่งท้องทะเลผู้มีความฉลาดเป็นเลิศและชอบโชว์ลีลาผาดโผน ฉันคือตัวอะไร?", 
+                thai: "ฉันคือสัตว์ทะเลแสนฉลาด ชอบกระโดดขึ้นจากน้ำมาเล่นกับมนุษย์ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "marine", read: "มารีน", meaning: "เกี่ยวกับทะเล" },
-                    { word: "acrobatics", read: "แอโครแบติกส์", meaning: "กายกรรม / ผาดโผน" }
+                    { word: "cetacean", read: "ซี-เท-เชียน", meaning: "สัตว์เลี้ยงลูกด้วยนมในทะเล" },
+                    { word: "playful", read: "เพลย์-ฟูล", meaning: "ขี้เล่นร่าเริง" }
                 ] 
             },
             { 
-                clue: "I possess multiple flexible limbs and make my home on the dark ocean floor. What am I?", 
+                clue: "I live deep in the sea and I have many long arms to grab things. What am I?", 
                 choices: ["Crab", "Octopus", "Starfish", "Jellyfish"], 
                 choiceThai: { "Crab": "ปู", "Octopus": "ปลาหมึกยักษ์", "Starfish": "ปลาดาว", "Jellyfish": "แมงกะพรุน" },
                 answer: "Octopus", 
-                thai: "ฉันมีรยางค์ยืดหยุ่นหลายเส้นและสร้างบ้านอยู่บริเวณพื้นท้องทะเลลึก ฉันคือตัวอะไร?", 
+                thai: "ฉันอาศัยอยู่ใต้ทะเลลึกและมีแขนยาวๆ หลายข้างไว้จับสิ่งของ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "flexible", read: "ฟเล็กซิเบิล", meaning: "ยืดหยุ่น" },
-                    { word: "limbs", read: "ลิมบส์", meaning: "รยางค์ / แขนขา" }
+                    { word: "tentacle", read: "เทน-ทา-เคิล", meaning: "หนวดระยางค์ของสัตว์น้ำ" },
+                    { word: "abyss", read: "อะ-บิส", meaning: "เหวลึกใต้ทะเล" }
                 ] 
             },
             { 
-                clue: "I thrive in freezing polar ice and snow fields, though I cannot take flight. What am I?", 
+                clue: "I live in very cold snow and ice. I look cute in black and white, but I cannot fly. What am I?", 
                 choices: ["Polar Bear", "Penguin", "Seal", "Zebra"], 
                 choiceThai: { "Polar Bear": "หมีขั้วโลก", "Penguin": "เพนกวิน", "Seal": "แมวน้ำ", "Zebra": "ม้าลาย" },
                 answer: "Penguin", 
-                thai: "ฉันเติบโตได้ดีในดินแดนน้ำแข็งขั้วโลกอันหนาวเหน็บ แม้ว่าจะบินไม่ได้ก็ตาม ฉันคือตัวอะไร?", 
+                thai: "ฉันอาศัยอยู่ในที่ที่มีหิมะและน้ำแข็งหนาวจัด ตัวสีดำขาวน่ารักแต่บินไม่ได้ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "thrive", read: "ไดรฟ์", meaning: "เจริญเติบโตได้ดี" },
-                    { word: "freezing", read: "ฟรีซิง", meaning: "หนาวจัดจนเป็นน้ำแข็ง" }
+                    { word: "glacial", read: "เกล-เชียล", meaning: "เกี่ยวกับธารน้ำแข็ง" },
+                    { word: "flightless", read: "ฟลิต-เลส", meaning: "บินไม่ได้โดยธรรมชาติ" }
                 ] 
             },
             { 
-                clue: "I am a fierce striped hunter prowling through dense tropical forests. What am I?", 
+                clue: "I am a big wild cat with orange fur and black lines. I run very fast. What am I?", 
                 choices: ["Lion", "Tiger", "Leopard", "Cheetah"], 
                 choiceThai: { "Lion": "สิงโต", "Tiger": "เสือโคร่ง", "Leopard": "เสือดาว", "Cheetah": "เสือชีตาห์" },
                 answer: "Tiger", 
-                thai: "ฉันคือนักล่าลายพาดกลอนผู้ดุร้ายที่ออกหากินในป่าทึบเขตร้อน ฉันคือตัวอะไร?", 
+                thai: "ฉันคือเสือป่าตัวใหญ่ ขนสีส้มมีลายเส้นสีดำ วิ่งได้เร็วมากๆ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "fierce", read: "เฟียซ", meaning: "ดุร้าย / ดุดัน" },
-                    { word: "prowling", read: "พราวนิง", meaning: "เดินย่องล่าเหยื่อ" }
+                    { word: "stripe", read: "สไตรป์", meaning: "ลายทางยาว" },
+                    { word: "stealthy", read: "สเทลธ์-ที", meaning: "ย่องเบา / แอบซุ่ม" }
                 ] 
             },
             { 
-                clue: "I am a bulky forest dweller that loves sweet treats and sleeps through cold months. What am I?", 
+                clue: "I am a big brown animal. I love to eat sweet honey and sleep all winter long. What am I?", 
                 choices: ["Wolf", "Bear", "Fox", "Lion"], 
                 choiceThai: { "Wolf": "หมาป่า", "Bear": "หมี", "Fox": "สุนัขจิ้งจอก", "Lion": "สิงโต" },
                 answer: "Bear", 
-                thai: "ฉันคือสัตว์ป่ารูปร่างใหญ่ที่หลงใหลของหวานและจำศีลตลอดช่วงเดือนที่หนาวเย็น ฉันคือตัวอะไร?", 
+                thai: "ฉันคือสัตว์ตัวสีน้ำตาลใหญ่ ชอบกินน้ำผึ้งหวานๆ และนอนหลับยาวตลอดหน้าหนาว ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "bulky", read: "บัลกี", meaning: "ตัวใหญ่หนาเทอะทะ" },
-                    { word: "treats", read: "ทรีทส์", meaning: "ของอร่อย / ขนมหวาน" }
+                    { word: "hibernate", read: "ไฮ-เบอร์-เนต", meaning: "จำศีล / นอนหลับยาวหน้าหนาว" },
+                    { word: "omnivorous", read: "อม-นิ-โว-รัส", meaning: "กินได้ทั้งพืชและสัตว์" }
                 ] 
             },
             { 
-                clue: "I am a brightly colored waterbird that balances gracefully on slender limbs. What am I?", 
+                clue: "I am a pink bird with long legs. I love to stand on one leg in the water. What am I?", 
                 choices: ["Flamingo", "Duck", "Swan", "Ostrich"], 
                 choiceThai: { "Flamingo": "นกฟลามิงโก", "Duck": "เป็ด", "Swan": "หงส์", "Ostrich": "นกกระจอกเทศ" },
                 answer: "Flamingo", 
-                thai: "ฉันคือนกน้ำสีสันสดใสที่ยืนทรงตัวอย่างสง่างามบนเรียวขาเพรียวบาง ฉันคือตัวอะไร?", 
+                thai: "ฉันคือนกสีชมพูที่มีขายาวๆ ชอบยืนขาเดียวอยู่ในน้ำ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "gracefully", read: "เกรซฟูลลี", meaning: "อย่างสง่างาม" },
-                    { word: "slender", read: "สเลนเดอร์", meaning: "เพรียวบาง" }
+                    { word: "flamingo", read: "ฟลา-มิง-โก", meaning: "นกฟลามิงโก (สีชมพู)" },
+                    { word: "stilt", read: "สทิลท์", meaning: "เสาค้ำ / ขายาวเรียวเหมือนเสา" }
                 ] 
             },
             { 
-                clue: "I am a diligent little gatherer that creates golden sweets around garden blossoms. What am I?", 
+                clue: "I am a tiny bug that flies around flowers and makes sweet honey for you. What am I?", 
                 choices: ["Ant", "Bee", "Wasp", "Fly"], 
                 choiceThai: { "Ant": "มด", "Bee": "ผึ้ง", "Wasp": "ต่อ / แตน", "Fly": "แมลงวัน" },
                 answer: "Bee", 
-                thai: "ฉันคือตัวเก็บเกี่ยวตัวน้อยผู้ขยันขันแข็งที่สร้างของหวานสีทองท่ามกลางดอกไม้ในสวน ฉันคือตัวอะไร?", 
+                thai: "ฉันคือแมลงตัวจิ๋วที่บินตอมดอกไม้และทำน้ำผึ้งหวานๆ ให้เธอกิน ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "diligent", read: "ดิลลิเจนต์", meaning: "ขยันขันแข็ง" },
-                    { word: "blossoms", read: "บลอสซัมส์", meaning: "ดอกไม้ที่กำลังบาน" }
+                    { word: "pollinate", read: "พอล-ลิ-เนต", meaning: "ผสมเกสรดอกไม้" },
+                    { word: "nectar", read: "เนก-ทาร์", meaning: "น้ำหวานจากดอกไม้" }
                 ] 
             },
             { 
-                clue: "I am an armored river stalker with powerful jaws lying quietly near muddy banks. What am I?", 
+                clue: "I am a green animal with hard skin. I live near rivers and have a very big mouth. What am I?", 
                 choices: ["Alligator", "Crocodile", "Turtle", "Frog"], 
                 choiceThai: { "Alligator": "อัลลิเกเตอร์", "Crocodile": "จระเข้", "Turtle": "เต่า", "Frog": "กบ" },
                 answer: "Crocodile", 
-                thai: "ฉันคือนักล่าหุ้มเกราะริมแม่น้ำที่มีกรามทรงพลัง ซุ่มตัวนิ่งๆ อยู่ใกล้ตลิ่งโคลน ฉันคือตัวอะไร?", 
+                thai: "ฉันตัวสีเขียวผิวหนังแข็งๆ อยู่ใกล้แม่น้ำและมีปากกว้างใหญ่มาก ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "armored", read: "อาร์มอร์ด", meaning: "มีเกราะหุ้ม" },
-                    { word: "stalker", read: "สตอล์กเกอร์", meaning: "ผู้สะกดรอยล่าเหยื่อ" }
+                    { word: "reptilian", read: "เร็บ-ทิ-เลียน", meaning: "สัตว์เลื้อยคลาน" },
+                    { word: "ambush", read: "แอม-บุช", meaning: "ซุ่มโจมตี / ดักรอเหยื่อ" }
                 ] 
             },
             { 
-                clue: "I am a famous hopper from distant lands who nurtures my offspring in a specialized front pocket. What am I?", 
+                clue: "I jump very far and I carry my cute baby in a pocket on my tummy. What am I?", 
                 choices: ["Kangaroo", "Koala", "Rabbit", "Deer"], 
                 choiceThai: { "Kangaroo": "จิงโจ้", "Koala": "โคอาลา", "Rabbit": "กระต่าย", "Deer": "กวาง" },
                 answer: "Kangaroo", 
-                thai: "ฉันคือเจ้าแห่งการกระโดดจากแดนไกลที่คอยเลี้ยงดูลูกน้อยในกระเป๋าหน้าท้องพิเศษ ฉันคือตัวอะไร?", 
+                thai: "ฉันกระโดดได้ไกลมากๆ และมีกระเป๋าหน้าท้องไว้พาลูกน้อยน่ารักเที่ยวด้วย ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "nurtures", read: "เนอร์เชอร์ส", meaning: "เลี้ยงดูฟูมฟัก" },
-                    { word: "offspring", read: "ออฟสปริง", meaning: "ลูกหลาน / ลูกสัตว์" }
+                    { word: "marsupial", read: "มาร์-ซู-เปียล", meaning: "สัตว์มีกระเป๋าหน้าท้อง" },
+                    { word: "pouch", read: "พาวช์", meaning: "กระเป๋าผ้าหรือถุงหน้าท้อง" }
                 ] 
             },
             { 
-                clue: "I am a tiny scurrying rodent known for loving dairy blocks and avoiding house felines. What am I?", 
+                clue: "I am a small mouse-like animal. I love to eat cheese and run away from cats. What am I?", 
                 choices: ["Mouse", "Hamster", "Rabbit", "Squirrel"], 
                 choiceThai: { "Mouse": "หนู", "Hamster": "แฮมสเตอร์", "Rabbit": "กระต่าย", "Squirrel": "กระรอก" },
                 answer: "Mouse", 
-                thai: "ฉันคือสัตว์ฟันแทะตัวจิ๋วที่ชอบวิ่งวุ่น รักเนยแข็งเป็นชีวิตจิตใจ และต้องคอยหลบเจ้าเหมียว ฉันคือตัวอะไร?", 
+                thai: "ฉันคือสัตว์หน้าตาเหมือนหนู ชอบกินชีสและต้องวิ่งหนีแมวตลอดเวลา ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "scurrying", read: "สคูรียิง", meaning: "วิ่งกรู / วิ่งลนลาน" },
-                    { word: "rodent", read: "โรเดนต์", meaning: "สัตว์ฟันแทะ" }
+                    { word: "rodent", read: "โร-เดนต์", meaning: "สัตว์ฟันแทะ" },
+                    { word: "scurry", read: "สเกอร์-รี", meaning: "วิ่งกรูหรือวิ่งหลบหนีลนลาน" }
                 ] 
             },
             { 
-                clue: "I am an agile tree acrobat with a balancing counterweight behind me, craving tropical yellow fruit. What am I?", 
+                clue: "I have a long tail, I can climb high trees, and I love to eat bananas. What am I?", 
                 choices: ["Monkey", "Cat", "Squirrel", "Sloth"], 
                 choiceThai: { "Monkey": "ลิง", "Cat": "แมว", "Squirrel": "กระรอก", "Sloth": "สลอธ" },
                 answer: "Monkey", 
-                thai: "ฉันคือนักกายกรรมบนต้นไม้ผู้คล่องแคล่วที่มีหางช่วยทรงตัว และหลงใหลผลไม้สีเหลืองเมืองร้อน ฉันคือตัวอะไร?", 
+                thai: "ฉันมีหางยาว ปีนต้นไม้สูงๆ เก่ง และชอบกินกล้วยเป็นชีวิตจิตใจ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "agile", read: "แอดไจล์", meaning: "ว่องไวปราดเปรียว" },
-                    { word: "counterweight", read: "เคาน์เตอร์เวท", meaning: "น้ำหนักถ่วงสำหรับทรงตัว" }
+                    { word: "primate", read: "ไพ-เมท", meaning: "สัตว์เลี้ยงลูกด้วยนมชั้นสูง (ลิงและมนุษย์)" },
+                    { word: "arboreal", read: "อาร์-โบ-เรียล", meaning: "ที่อาศัยอยู่บนต้นไม้" }
                 ] 
             },
             { 
-                clue: "I am a flightless sprinter designed to race across arid desert landscapes at top speed. What am I?", 
+                clue: "I am a big bird that cannot fly, but I can run faster than a car in the desert. What am I?", 
                 choices: ["Penguin", "Ostrich", "Duck", "Chicken"], 
                 choiceThai: { "Penguin": "เพนกวิน", "Ostrich": "นกกระจอกเทศ", "Duck": "เป็ด", "Chicken": "ไก่" },
                 answer: "Ostrich", 
-                thai: "ฉันคือนักวิ่งสปรินต์เตอร์ที่บินไม่ได้ ถูกสร้างมาให้วิ่งแข่งข้ามผืนทรายแห้งแล้งด้วยความเร็วสูง ฉันคือตัวอะไร?", 
+                thai: "ฉันคือนกตัวใหญ่ที่บินไม่ได้ แต่ฉันวิ่งข้ามทะเลทรายได้เร็วกว่ารถยนต์ซะอีก ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "flightless", read: "ฟลิตเลส", meaning: "บินไม่ได้" },
-                    { word: "arid", read: "แอริด", meaning: "แห้งแล้ง" }
+                    { word: "sprint", read: "สปรินท์", meaning: "วิ่งแข่งความเร็วสูงระยะสั้น" },
+                    { word: "arid", read: "แอริด", meaning: "แห้งแล้ง (ทะเลทราย)" }
                 ] 
             },
             { 
-                clue: "I possess dark and bright yellow bands, delivering a painful defensive poke when angered. What am I?", 
+                clue: "I am yellow and black. I can give you a sharp sting if you make me mad. What am I?", 
                 choices: ["Wasp", "Fly", "Ant", "Mosquito"], 
                 choiceThai: { "Wasp": "ต่อ / แตน", "Fly": "แมลงวัน", "Ant": "มด", "Mosquito": "ยุง" },
                 answer: "Wasp", 
-                thai: "ฉันมีลวดลายแถบเหลืองเข้มสลับดำ พร้อมส่งเหล็กในป้องกันตัวสุดเจ็บปวดเมื่อโกรธ ฉันคือตัวอะไร?", 
+                thai: "ฉันมีตัวสีเหลืองสลับดำ และพร้อมส่งเหล็กในสุดเจ็บไปหาถ้าทำให้ฉันโกรธ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "defensive", read: "ดีเฟน시브", meaning: "เพื่อการป้องกันตัว" },
-                    { word: "angered", read: "แองเกอร์ด", meaning: "โกรธ / โมโห" }
+                    { word: "venomous", read: "เว-นอม-มัส", meaning: "มีพิษ" },
+                    { word: "aggressive", read: "อัก-เกรส-시브", meaning: "ก้าวร้าว / ขี้โมโห" }
                 ] 
             },
             { 
-                clue: "I am an apex ocean hunter with rows of razor-sharp blades inspiring fear in swimmers. What am I?", 
+                clue: "I live in the deep ocean and I have very sharp teeth. People are scared of me. What am I?", 
                 choices: ["Whale", "Shark", "Dolphin", "Seal"], 
                 choiceThai: { "Whale": "วาฬ", "Shark": "ฉลาม", "Dolphin": "โลมา", "Seal": "แมวน้ำ" },
                 answer: "Shark", 
-                thai: "ฉันคือนักล่าสูงสุดแห่งท้องทะเลที่มีฟันคมกริบเรียงราย สร้างความหวาดกลัวให้นักว่ายน้ำ ฉันคือตัวอะไร?", 
+                thai: "ฉันอาศัยอยู่ใต้ทะเลลึกและมีฟันแหลมคมน่ากลัว ผู้คนพากันหวาดกลัวฉัน ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "apex", read: "เอเพ็กซ์", meaning: "จุดสูงสุด / ผู้ล่าอันดับหนึ่ง" },
-                    { word: "razor-sharp", read: "เรเซอร์ ชาร์ป", meaning: "คมกริบดั่งมีดโกน" }
+                    { word: "predatory", read: "เพรด-ดา-ทอ-รี", meaning: "ที่มีนิสัยล่าเหยื่อ" },
+                    { word: "formidable", read: "ฟอร์-มิ-ดะ-เบิล", meaning: "น่าเกรงขาม / น่ากลัว" }
                 ] 
             },
             { 
-                clue: "I am a sturdy pack helper with long listening organs and soft fur, smaller than a steed. What am I?", 
+                clue: "I look like a small horse with long ears and soft fur. I help carry heavy bags. What am I?", 
                 choices: ["Donkey", "Horse", "Goat", "Sheep"], 
                 choiceThai: { "Donkey": "ลา", "Horse": "ม้า", "Goat": "แพะ", "Sheep": "แกะ" },
                 answer: "Donkey", 
-                thai: "ฉันคือผู้ช่วยแบกของทนทานที่มีอวัยวะรับฟังยาวและขนหนานุ่ม รูปร่างเล็กกว่าม้า ฉันคือตัวอะไร?", 
+                thai: "ฉันหน้าตาคล้ายม้าตัวเล็ก หูยาวและขนหนานุ่ม ช่วยมนุษย์แบกของหนักๆ ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "sturdy", read: "สตาร์ดี", meaning: "แข็งแรงทนทาน" },
-                    { word: "steed", read: "สตีด", meaning: "ม้าศึก / ม้าโตเต็มวัย" }
+                    { word: "beast of burden", read: "บีสต์ ออฟ เบอร์เดน", meaning: "สัตว์ช่วยแบกหามภาระ" },
+                    { word: "stubborn", read: "สตับ-บอร์น", meaning: "ดื้อรั้นหัวรั้น" }
                 ] 
             },
             { 
-                clue: "I am a camouflaged reptile blending into leafy surroundings by shifting my body shade. What am I?", 
+                clue: "I can change my skin color to hide from other animals in the green trees. What am I?", 
                 choices: ["Snake", "Chameleon", "Frog", "Lizard"], 
                 choiceThai: { "Snake": "งู", "Chameleon": "กิ้งก่าคาเมเลียน", "Frog": "กบ", "Lizard": "กิ้งก่า" },
                 answer: "Chameleon", 
-                thai: "ฉันคือกิ้งก่าพลางตัวที่กลมกลืนกับสภาพแวดล้อมใบไม้ด้วยการเปลี่ยนเฉดสีผิว ฉันคือตัวอะไร?", 
+                thai: "ฉันเปลี่ยนสีผิวของตัวเองเพื่อซ่อนตัวจากสัตว์อื่นในพุ่มไม้เขียวๆ ได้ด้วย ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "camouflaged", read: "คามอฟลาจด", meaning: "พรางตัว" },
-                    { word: "surroundings", read: "ซูราวดิงส์", meaning: "สภาพแวดล้อมรอบตัว" }
+                    { word: "camouflage", read: "คาม-โม-ฟลาจ", meaning: "การพรางตัวกลมกลืน" },
+                    { word: "chromatophore", read: "โคร-มา-โท-ฟอร์", meaning: "เซลล์เม็ดสีที่ช่วยเปลี่ยนสีผิว" }
                 ] 
             },
             { 
-                clue: "I am a majestic hoofed riding partner that humans have treasured across history. What am I?", 
+                clue: "I am a big, beautiful farm animal with hooves. People love to ride on my back. What am I?", 
                 choices: ["Cow", "Horse", "Donkey", "Pig"], 
                 choiceThai: { "Cow": "วัว", "Horse": "ม้า", "Donkey": "ลา", "Pig": "หมู" },
                 answer: "Horse", 
-                thai: "ฉันคือเพื่อนร่วมทางมีกีบเท้าอันสง่างามที่มนุษย์รักและใช้งานร่วมกันมาตลอดประวัติศาสตร์ ฉันคือตัวอะไร?", 
+                thai: "ฉันคือสัตว์ฟาร์มตัวใหญ่สวยงามมีกีบเท้า คนชอบขึ้นขี่บนหลังของฉัน ฉันคือตัวอะไร?", 
                 vocab: [
-                    { word: "majestic", read: "มาเจสติก", meaning: "สง่างาม / โอ่อ่า" },
-                    { word: "treasured", read: "เทรเชอร์ด", meaning: "รักและทะนุถนอม" }
+                    { word: "equine", read: "เอ-ควาย-น์", meaning: "สัตว์ตระกูลม้า" },
+                    { word: "gallop", read: "แกล-ล็อพ", meaning: "การควบม้าวิ่งอย่างเร็ว" }
                 ] 
             }
         ];
