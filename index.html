@@ -895,11 +895,11 @@
             // สั่งเล่นวิดีโอ
             gameVideo.src = "https://streamable.com/e/vlks9f?autoplay=1&loop=0&nocontrols=1";
 
-            // ปรับเวลาตั้งตัดเข้าเกมตามความยาววิดีโอจริง 9.3 วินาที (ตั้งไว้ที่ 9500 มิลลิวินาทีพอดี)
+            // ปรับเวลาตั้งตัดเข้าเกมเป็น 9.8 วินาที (9800 มิลลิวินาที)
             if (videoTimer) clearTimeout(videoTimer);
             videoTimer = setTimeout(() => {
                 startActualGame();
-            }, 9500); 
+            }, 9800); 
         }
 
         function startActualGame() {
