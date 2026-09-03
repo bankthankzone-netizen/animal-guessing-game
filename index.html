@@ -91,21 +91,30 @@
             box-shadow: 0 2px 0 #1ca74c;
         }
 
-        /* สไตล์สำหรับหน้าจอวิดีโอคั่นกลาง */
+        /* สไตล์สำหรับหน้าจอวิดีโอคั่นกลาง (ปรับให้วิดีโอขยายเต็มพื้นที่กล่อง) */
         #video-screen {
             display: none;
             flex-direction: column;
             align-items: center;
             gap: 15px;
+            width: 100%;
         }
         .video-wrapper {
             position: relative;
             width: 100%;
-            height: 0px;
-            padding-bottom: 56.250%;
+            height: 420px; /* กำหนดความสูงให้เต็มตาและกว้างขึ้น */
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            background: #000;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
         }
         .skip-btn {
             background-color: #ffa502;
@@ -444,11 +453,11 @@
             <button class="start-btn" onclick="startVideo()">🚀 เริ่มเล่นเกม (Start!)</button>
         </div>
 
-        <!-- หน้าจอวิดีโอคั่นกลาง -->
+        <!-- หน้าจอวิดีโอคั่นกลาง (เต็มพื้นที่กล่อง) -->
         <div id="video-screen">
             <p style="font-size: 1.2rem; color: #d35400; margin: 0; font-weight: bold;">🎬 ชมวิดีโอก่อนเข้าสู่เกมกันก่อนนะจ๊ะ...</p>
             <div class="video-wrapper">
-                <iframe id="game-video" allow="fullscreen;autoplay" allowfullscreen height="100%" src="" width="100%" style="border:none; width:100%; height:100%; position:absolute; left:0px; top:0px; overflow:hidden;"></iframe>
+                <iframe id="game-video" allow="fullscreen;autoplay" allowfullscreen src=""></iframe>
             </div>
             <button class="skip-btn" onclick="skipVideo()">⏭️ ข้ามวิดีโอ (Skip)</button>
         </div>
@@ -915,15 +924,14 @@
             welcomeScreen.style.display = "none";
             videoScreen.style.display = "flex";
 
-            // สั่งให้ iframe โหลดลิงก์วิดีโอพร้อมเล่นอัตโนมัติ
+            // โหลดลิงก์วิดีโอ (Streamable)
             gameVideo.src = "https://streamable.com/e/vlks9f?autoplay=1&loop=0&nocontrols=1";
 
-            // ตั้งเวลาสำรอง (Fallback) สมมติว่าวิดีโอยาวประมาณ 30 วินาที เมื่อหมดเวลาจะเข้าเกมอัตโนมัติ 
-            // (หรือผู้เล่นสามารถกดปุ่ม "ข้ามวิดีโอ" ด้านล่างเพื่อเข้าเกมทันทีได้เช่นกัน)
+            // ตั้งเวลาสำรอง (30 วินาที) หรือกดข้ามได้
             if (videoTimer) clearTimeout(videoTimer);
             videoTimer = setTimeout(() => {
                 startActualGame();
-            }, 30000); // 30 วินาที (ปรับเวลาเพิ่มลดได้ตามความยาวของวิดีโอ)
+            }, 30000); 
         }
 
         function skipVideo() {
@@ -933,14 +941,11 @@
 
         function startActualGame() {
             if (videoTimer) clearTimeout(videoTimer);
-            // เคลียร์ src ของวิดีโอเพื่อหยุดเสียง/วิดีโอเบื้องหลัง
             gameVideo.src = "";
 
-            // ซ่อนหน้าวิดีโอ แล้วแสดงพื้นที่เล่นเกม
             videoScreen.style.display = "none";
             gameArea.style.display = "block";
 
-            // รีเซ็ตค่าเริ่มต้น
             currentIndex = 0;
             score = 0;
             scoreDisplay.textContent = score;
@@ -954,7 +959,6 @@
         function goToHome() {
             if (videoTimer) clearTimeout(videoTimer);
             gameVideo.src = "";
-            // ซ่อนหน้าเกมและหน้าวิดีโอ กลับมาแสดงหน้าแรก
             gameArea.style.display = "none";
             videoScreen.style.display = "none";
             welcomeScreen.style.display = "flex";
@@ -1016,7 +1020,7 @@
                 feedback.textContent = `คะแนนรวมของคุณคือ ${score} จาก ${questions.length} คะแนน! 🌟`;
                 feedback.style.color = "#d35400";
                 nextBtn.style.display = "none";
-                homeBtn.style.display = "block"; // แสดงปุ่มกลับมาหน้าแรกเมื่อเล่นจบ
+                homeBtn.style.display = "block";
             }
         }
 
